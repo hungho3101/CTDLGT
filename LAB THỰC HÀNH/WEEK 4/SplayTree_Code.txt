@@ -1,0 +1,220 @@
+// 1111111111111111111111111111111111111111111111111
+// 1111111111111111111111111111111111111111111111111
+void rotateRight(Node *p)
+{
+    Node *q = p->pLeft;
+    if (p->pParent)
+    {
+        if (p->pParent->pLeft == p)
+        {
+            p->pParent->pLeft = q;
+        }
+        else
+        {
+            p->pParent->pRight = q;
+        }
+    }
+    if (q)
+    {
+        q->pParent = p->pParent;
+    }
+    p->pLeft = q->pRight;
+    if (p->pLeft)
+    {
+        p->pLeft->pParent = p;
+    }
+    p->pParent = q;
+    if (q)
+    {
+        q->pRight = p;
+    }
+}
+
+void rotateLeft(Node *p)
+{
+    Node *q = p->pRight;
+    if (p->pParent)
+    {
+        if (p->pParent->pLeft == p)
+        {
+            p->pParent->pLeft = q;
+        }
+        else
+        {
+            p->pParent->pRight = q;
+        }
+    }
+    if (q)
+    {
+        q->pParent = p->pParent;
+    }
+    p->pRight = q->pLeft;
+    if (p->pRight)
+    {
+        p->pRight->pParent = p;
+    }
+    p->pParent = q;
+    if (q)
+    {
+        q->pLeft = p;
+    }
+}
+
+void splay(Node *p)
+{
+    while (p->pParent)
+    {
+        if (!p->pParent->pParent)
+        {
+            if (p->pParent->pLeft == p)
+            {
+                rotateRight(p->pParent);
+            }
+            else
+            {
+                rotateLeft(p->pParent);
+            }
+        }
+        else if (p->pParent->pLeft == p && p->pParent->pParent->pLeft == p->pParent)
+        {
+            rotateRight(p->pParent->pParent);
+            rotateRight(p->pParent);
+        }
+        else if (p->pParent->pRight == p && p->pParent->pParent->pRight == p->pParent)
+        {
+            rotateLeft(p->pParent->pParent);
+            rotateLeft(p->pParent);
+        }
+        else if (p->pParent->pLeft == p && p->pParent->pParent->pRight == p->pParent)
+        {
+            rotateRight(p->pParent);
+            rotateLeft(p->pParent);
+        }
+        else
+        {
+            rotateLeft(p->pParent);
+            rotateRight(p->pParent);
+        }
+    }
+    root = p;
+}
+
+void insert(int val)
+{
+    Node *p = root;
+    Node *q = nullptr;
+    while (p)
+    {
+        q = p;
+        if (val < p->val)
+        {
+            p = p->pLeft;
+        }
+        else
+        {
+            p = p->pRight;
+        }
+    }
+
+    p = new Node(val);
+    p->pParent = q;
+
+    if (!q)
+    {
+        root = p;
+    }
+    else if (val < q->val)
+    {
+        q->pLeft = p;
+    }
+    else
+    {
+        q->pRight = p;
+    }
+
+    splay(p);
+}
+
+// 2222222222222222222222222222222222222222222222222
+// 2222222222222222222222222222222222222222222222222
+bool search(int val)
+{
+    Node *p = root;
+    Node *q = nullptr;
+
+    // Duyệt cây tìm kiếm nhị phân
+    while (p)
+    {
+        q = p;
+        if (val < p->val)
+        {
+            p = p->pLeft;
+        }
+        else if (val > p->val)
+        {
+            p = p->pRight;
+        }
+        else
+        {
+            splay(p);
+            return true;
+        }
+    }
+
+    if (q)
+    {
+        splay(q);
+    }
+    return false;
+}
+
+// 3333333333333333333333333333333333333333333333333
+// 3333333333333333333333333333333333333333333333333
+Node *remove(int val)
+{
+    if (root == NULL)
+    {
+        return root;
+    }
+
+    search(val);
+
+    if (root->val != val)
+    {
+        return NULL;
+    }
+
+    Node *removedNode = root;
+    Node *leftSubtree = root->pLeft;
+    Node *rightSubtree = root->pRight;
+
+    if (leftSubtree != NULL)
+    {
+        leftSubtree->pParent = NULL;
+    }
+    if (rightSubtree != NULL)
+    {
+        rightSubtree->pParent = NULL;
+    }
+
+    if (leftSubtree == NULL)
+    {
+        root = rightSubtree;
+    }
+    else
+    {
+        root = leftSubtree;
+        while (root->pRight != NULL)
+        {
+            root = root->pRight;
+        }
+        splay(root);
+        root->pRight = rightSubtree;
+        if (rightSubtree != NULL)
+        {
+            rightSubtree->pParent = root;
+        }
+    }
+
+    return removedNode;
+}

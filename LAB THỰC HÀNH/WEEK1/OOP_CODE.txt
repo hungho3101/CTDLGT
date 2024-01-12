@@ -1,0 +1,1300 @@
+///////////////////////////////////////////////////////////////////
+//QUESTION 1
+///////////////////////////////////////////////////////////////////
+class Point
+{
+private:
+    double x, y;
+
+public:
+    Point()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero x-y coordinate
+         */
+        setX(0);
+        setY(0);
+        return;
+    }
+
+    Point(double x, double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setX(x);
+        setY(y);
+        return;
+    }
+
+    void setX(double x)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->x = x;
+    }
+
+    void setY(double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->y = y;
+    }
+
+    double getX() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->x;
+    }
+
+    double getY() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->y;
+    }
+
+    double distanceToPoint(const Point &pointA)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: calculate the distance from this point to point A in the coordinate plane
+         */
+        return sqrt(pow(this->x - pointA.x, 2) + pow(this->y - pointA.y, 2));
+    }
+};
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 2
+///////////////////////////////////////////////////////////////////
+
+class Point
+{
+private:
+    double x, y;
+
+public:
+    Point()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero x-y coordinate
+         */
+        setX(0);
+        setY(0);
+        return;
+    }
+
+    Point(double x, double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setX(x);
+        setY(y);
+        return;
+    }
+
+    void setX(double x)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->x = x;
+    }
+
+    void setY(double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->y = y;
+    }
+
+    double getX() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->x;
+    }
+
+    double getY() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->y;
+    }
+
+    double distanceToPoint(const Point &pointA)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: calculate the distance from this point to point A in the coordinate plane
+         */
+        return sqrt(pow(this->x - pointA.x, 2) + pow(this->y - pointA.y, 2));
+    }
+};
+
+class Circle
+{
+private:
+    Point center;
+    double radius;
+
+public:
+    Circle()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero center's x-y and radius
+         */
+        center.setX(0);
+        center.setY(0);
+        this->radius = 0;
+    }
+
+    Circle(Point center, double radius)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setCenter(center);
+        setRadius(radius);
+    }
+
+    Circle(const Circle &circle)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setCenter(circle.center);
+        setRadius(circle.radius);
+    }
+
+    void setCenter(Point point)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->center.setX(point.getX());
+        this->center.setY(point.getY());
+    }
+
+    void setRadius(double radius)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->radius = radius;
+    }
+
+    Point getCenter() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->center;
+    }
+
+    double getRadius() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->radius;
+    }
+
+    void printCircle()
+    {
+        printf("Center: {%.2f, %.2f} and Radius %.2f\n", this->center.getX(), this->center.getY(), this->radius);
+    }
+};
+
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 3
+///////////////////////////////////////////////////////////////////
+class Point
+{
+private:
+    double x, y;
+
+public:
+    Point()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero x-y coordinate
+         */
+        setX(0);
+        setY(0);
+        return;
+    }
+
+    Point(double x, double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setX(x);
+        setY(y);
+        return;
+    }
+
+    void setX(double x)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->x = x;
+    }
+
+    void setY(double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->y = y;
+    }
+
+    double getX() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->x;
+    }
+
+    double getY() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->y;
+    }
+
+    double distanceToPoint(const Point &pointA)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: calculate the distance from this point to point A in the coordinate plane
+         */
+        return sqrt(pow(this->x - pointA.x, 2) + pow(this->y - pointA.y, 2));
+    }
+};
+
+class Circle
+{
+private:
+    Point center;
+    double radius;
+
+public:
+    Circle()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero center's x-y and radius
+         */
+        center.setX(0);
+        center.setY(0);
+        this->radius = 0;
+    }
+
+    Circle(Point center, double radius)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setCenter(center);
+        setRadius(radius);
+    }
+
+    Circle(const Circle &circle)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setCenter(circle.center);
+        setRadius(circle.radius);
+    }
+
+    void setCenter(Point point)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->center.setX(point.getX());
+        this->center.setY(point.getY());
+    }
+
+    void setRadius(double radius)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->radius = radius;
+    }
+
+    Point getCenter() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->center;
+    }
+
+    double getRadius() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->radius;
+    }
+
+    void printCircle()
+    {
+        printf("Center: {%.2f, %.2f} and Radius %.2f\n", this->center.getX(), this->center.getY(), this->radius);
+    }
+
+    bool containsPoint(const Point point)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: check if a given point is entirely within the circle (does not count if the point lies on the circle).
+                 If contain, return true.
+         */
+        if (center.distanceToPoint(point) < radius)
+            return true;
+        else
+            return false;
+    }
+
+    bool containsTriangle(const Point pointA, const Point pointB, const Point pointC)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: check if a given triangle ABC (A, B, C are not on the same line) is entirely within the circle (does not count if any point of the triangle lies on the circle).
+                 If contain, return true.
+         */
+        if ((containsPoint(pointA)) && (containsPoint(pointB)) && (containsPoint(pointC)))
+            return true;
+        else
+            return false;
+    }
+};
+
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 4
+///////////////////////////////////////////////////////////////////
+class Point
+{
+private:
+    double x, y;
+
+public:
+    Point()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero x-y coordinate
+         */
+        setX(0);
+        setY(0);
+        return;
+    }
+
+    Point(double x, double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setX(x);
+        setY(y);
+        return;
+    }
+
+    void setX(double x)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->x = x;
+    }
+
+    void setY(double y)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->y = y;
+    }
+
+    double getX() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->x;
+    }
+
+    double getY() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->y;
+    }
+
+    double distanceToPoint(const Point &pointA)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: calculate the distance from this point to point A in the coordinate plane
+         */
+        return sqrt(pow(this->x - pointA.x, 2) + pow(this->y - pointA.y, 2));
+    }
+};
+
+class Circle
+{
+private:
+    Point center;
+    double radius;
+
+public:
+    Circle()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero center's x-y and radius
+         */
+        center.setX(0);
+        center.setY(0);
+        this->radius = 0;
+    }
+
+    Circle(Point center, double radius)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setCenter(center);
+        setRadius(radius);
+    }
+
+    Circle(const Circle &circle)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        setCenter(circle.center);
+        setRadius(circle.radius);
+    }
+
+    void setCenter(Point point)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->center.setX(point.getX());
+        this->center.setY(point.getY());
+    }
+
+    void setRadius(double radius)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->radius = radius;
+    }
+
+    Point getCenter() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->center;
+    }
+
+    double getRadius() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->radius;
+    }
+
+    void printCircle()
+    {
+        printf("Center: {%.2f, %.2f} and Radius %.2f\n", this->center.getX(), this->center.getY(), this->radius);
+    }
+
+    bool containsPoint(const Point point)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: check if a given point is entirely within the circle (does not count if the point lies on the circle).
+                 If contain, return true.
+         */
+        if (center.distanceToPoint(point) < radius)
+            return true;
+        else
+            return false;
+    }
+
+    bool containsTriangle(const Point pointA, const Point pointB, const Point pointC)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: check if a given triangle ABC (A, B, C are not on the same line) is entirely within the circle (does not count if any point of the triangle lies on the circle).
+                 If contain, return true.
+         */
+        if ((containsPoint(pointA)) && (containsPoint(pointB)) && (containsPoint(pointC)))
+            return true;
+        else
+            return false;
+    }
+    void operator=(const Circle &circle)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->setCenter(circle.center);
+        this->setRadius(circle.radius);
+    }
+
+    bool operator==(const Circle &circle)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        if ((this->center.getX() == circle.center.getX()) && (this->center.getX() == circle.center.getX()) && (this->radius == circle.radius))
+            return true;
+        else
+            return false;
+    }
+
+    friend istream &operator>>(istream &in, Circle &circle)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        double a, b, c;
+        in >> a >> b >> c;
+        circle.center.setX(a);
+        circle.center.setY(b);
+        circle.setRadius(c);
+        return in;
+    }
+};
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 5
+///////////////////////////////////////////////////////////////////
+
+Character::Character()
+{
+    // STUDENT ANSWER
+    this->setHp(0);
+    this->setX(0);
+    this->setY(0);
+}
+
+Character::Character(int hp, int x, int y)
+{
+    // STUDENT ANSWER
+    this->setHp(hp);
+    this->setX(x);
+    this->setY(y);
+}
+
+int Character::getHp()
+{
+    // STUDENT ANSWER
+    return this->hp;
+}
+
+void Character::setHp(int hp)
+{
+    // STUDENT ANSWER
+    this->hp = hp;
+}
+
+int Character::getX()
+{
+    // STUDENT ANSWER
+    return this->x;
+}
+
+void Character::setX(int x)
+{
+    // STUDENT ANSWER
+    this->x = x;
+}
+
+int Character::getY()
+{
+    // STUDENT ANSWER
+    return this->y;
+}
+
+void Character::setY(int y)
+{
+    // STUDENT ANSWER
+    this->y = y;
+}
+
+int Character::getManhattanDistTo(Character *other)
+{
+    // STUDENT ANSWER
+    int a;
+    if (this->x > other->getX())
+        a = this->x - other->getX();
+    else
+        a = other->getX() - this->x;
+    if (this->y > other->getY())
+        a += this->y - other->getY();
+    else
+        a += other->getY() - this->y;
+    return a;
+}
+
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 6
+///////////////////////////////////////////////////////////////////
+
+void Character::operator=(const Character &other)
+{
+    // STUDENT ANSWER
+    Character tempt = other;
+    this->setHp(tempt.getHp());
+    this->setX(tempt.getX());
+    this->setY(tempt.getY());
+}
+
+// Character a < Character b when a's hp is less than or equal b's hp
+bool Character::operator<(const Character &other)
+{
+    // STUDENT ANSWER
+    Character tempt = other;
+    return this->getHp() <= tempt.getHp();
+}
+
+// Print data of the instance with format: hp-x-y
+void Character::operator() ()
+{
+    // STUDENT ANSWER
+    cout << this->getHp() << "-" << this->getX() << "-" << this->getY();
+}
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 7
+///////////////////////////////////////////////////////////////////
+
+class Player : private Character
+{
+
+public:
+    int hp, x, y;
+    Player()
+    {
+        hp = 0;
+        x = 0;
+        y = 0;
+    }
+    Player(int hp, int x, int y)
+    {
+        this->hp = hp;
+        this->x = x;
+        this->y = y;
+    }
+    void printPlayerData()
+    {
+        cout << this->hp << "-" << this->x << "-" << this->y;
+    }
+    void moveTo(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    }
+};
+
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 8
+///////////////////////////////////////////////////////////////////
+
+class Book
+{
+private:
+    char *title;
+    char *authors;
+    int publishingYear;
+
+public:
+    Book()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero publishingYear and null pointer
+         */
+        title = nullptr;
+        authors = nullptr;
+        publishingYear = 0;
+    }
+
+    Book(const char *title, const char *authors, int publishingYear)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->setTitle(title);
+        this->setAuthors(authors);
+        this->setPublishingYear(publishingYear);
+    }
+
+    Book(const Book &book)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: deep copy constructor
+         */
+        this->setTitle(book.getTitle());
+        this->setAuthors(book.getAuthors());
+        this->setPublishingYear(book.getPublishingYear());
+    }
+
+    void setTitle(const char *title)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        char* t=(char*) title;
+        this->title = t;
+    }
+
+    void setAuthors(const char *authors)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        char* a = (char*) authors;
+        this->authors = a;
+    }
+
+    void setPublishingYear(int publishingYear)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->publishingYear = publishingYear;
+    }
+
+    char *getTitle() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->title;
+    }
+
+    char *getAuthors() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->authors;
+    }
+
+    int getPublishingYear() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->publishingYear;
+    }
+
+    ~Book()
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        // delete title;
+        // delete authors;
+    }
+
+    void printBook()
+    {
+        printf("%s\n%s\n%d", this->title, this->authors, this->publishingYear);
+    }
+};
+
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 9
+///////////////////////////////////////////////////////////////////
+class Book
+{
+private:
+    char *title;
+    char *authors;
+    int publishingYear;
+
+public:
+    Book()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero publishingYear and null pointer
+         */
+        title = nullptr;
+        authors = nullptr;
+        publishingYear = 0;
+    }
+
+    Book(const char *title, const char *authors, int publishingYear)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->setTitle(title);
+        this->setAuthors(authors);
+        this->setPublishingYear(publishingYear);
+    }
+
+    Book(const Book &book)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: deep copy constructor
+         */
+        this->setTitle(book.getTitle());
+        this->setAuthors(book.getAuthors());
+        this->setPublishingYear(book.getPublishingYear());
+    }
+
+    void setTitle(const char *title)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        char *t = (char *)title;
+        this->title = t;
+    }
+
+    void setAuthors(const char *authors)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        char *a = (char *)authors;
+        this->authors = a;
+    }
+
+    void setPublishingYear(int publishingYear)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->publishingYear = publishingYear;
+    }
+
+    char *getTitle() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->title;
+    }
+
+    char *getAuthors() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->authors;
+    }
+
+    int getPublishingYear() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->publishingYear;
+    }
+
+    ~Book()
+    {
+        /*
+         * STUDENT ANSWER
+         */
+    }
+
+    void printBook()
+    {
+        printf("%s\n%s\n%d", this->title, this->authors, this->publishingYear);
+    }
+
+    friend bool checkAuthor(Book book, const char *author)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: returns true if the author is on the book's authors list, otherwise it returns false
+         */
+        char authorsCopy[strlen(book.getAuthors()) + 1];
+        strcpy(authorsCopy, book.getAuthors()); // strcpy tao ban sao tranh lam thay doi ban goc
+
+        char *tempAuthor = strtok(authorsCopy, ","); // strtok tach ten tung tac gia dua tren dau ","
+        while (tempAuthor != nullptr)
+        {
+            while (*tempAuthor == ' ') // ki tu dau " " thi bo qua no
+            {
+                tempAuthor++;
+            }
+            if (strcmp(tempAuthor, author) == 0) // strcmp so sanh(= thi ra 0, < ra (-), > ra (+))
+            {
+                return true;
+            }
+            tempAuthor = strtok(nullptr, ","); // tiep tuc tach ten (dung nullprt de tach tiep chuoi)
+        }
+
+        return false;
+    }
+};
+
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 10
+///////////////////////////////////////////////////////////////////
+
+class Book
+{
+private:
+    char *title;
+    char *authors;
+    int publishingYear;
+
+public:
+    Book()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero publishingYear and null pointer
+         */
+        title = nullptr;
+        authors = nullptr;
+        publishingYear = 0;
+    }
+
+    Book(const char *title, const char *authors, int publishingYear)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->setTitle(title);
+        this->setAuthors(authors);
+        this->setPublishingYear(publishingYear);
+    }
+
+    Book(const Book &book)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: deep copy constructor
+         */
+        this->setTitle(book.getTitle());
+        this->setAuthors(book.getAuthors());
+        this->setPublishingYear(book.getPublishingYear());
+    }
+
+    void setTitle(const char *title)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        char *t = (char *)title;
+        this->title = t;
+    }
+
+    void setAuthors(const char *authors)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        char *a = (char *)authors;
+        this->authors = a;
+    }
+
+    void setPublishingYear(int publishingYear)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->publishingYear = publishingYear;
+    }
+
+    char *getTitle() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->title;
+    }
+
+    char *getAuthors() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->authors;
+    }
+
+    int getPublishingYear() const
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        return this->publishingYear;
+    }
+
+    ~Book()
+    {
+        /*
+         * STUDENT ANSWER
+         */
+    }
+
+    void printBook()
+    {
+        printf("%s\n%s\n%d", this->title, this->authors, this->publishingYear);
+    }
+
+    // friend bool checkAuthor(Book book, const char *author)
+    // {
+    //     /*
+    //      * STUDENT ANSWER
+    //      * TODO: returns true if the author is on the book's authors list, otherwise it returns false
+    //      */
+    //     char authorsCopy[strlen(book.getAuthors()) + 1];
+    //     strcpy(authorsCopy, book.getAuthors()); // strcpy tao ban sao tranh lam thay doi ban goc
+
+    //     char *tempAuthor = strtok(authorsCopy, ","); // strtok tach ten tung tac gia dua tren dau ","
+    //     while (tempAuthor != nullptr)
+    //     {
+    //         while (*tempAuthor == ' ') // ki tu dau " " thi bo qua no
+    //         {
+    //             tempAuthor++;
+    //         }
+    //         if (strcmp(tempAuthor, author) == 0) // strcmp so sanh(= thi ra 0, < ra (-), > ra (+))
+    //         {
+    //             return true;
+    //         }
+    //         tempAuthor = strtok(nullptr, ","); // tiep tuc tach ten (dung nullprt de tach tiep chuoi)
+    //     }
+
+    //     return false;
+    // }
+};
+class Printer
+{
+public:
+    static void printBook(const Book book)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+
+        //PRINT TITLE
+        cout << book.getTitle() << endl;
+
+        //PRINT AUTHORS
+        char authorsCopy[strlen(book.getAuthors()) + 1];
+        strcpy(authorsCopy, book.getAuthors()); // strcpy tao ban sao tranh lam thay doi ban goc
+
+        char *tempAuthor = strtok(authorsCopy, ","); // strtok tach ten tung tac gia dua tren dau ","
+        while (tempAuthor != nullptr)
+        {
+            while (*tempAuthor == ' ') // ki tu dau " " thi bo qua no
+            {
+                tempAuthor++;
+            }
+            cout << tempAuthor << endl;
+            tempAuthor = strtok(nullptr, ","); // tiep tuc tach ten (dung nullprt de tach tiep chuoi)
+        }
+
+        //PRINT PUBLISHING YEAR
+        cout << book.getPublishingYear();
+    }
+};
+
+
+///////////////////////////////////////////////////////////////////
+//QUESTION 11
+///////////////////////////////////////////////////////////////////
+
+
+enum Color
+{
+    red,
+    green,
+    blue
+};
+enum Size
+{
+    small,
+    medium,
+    big
+};
+
+class Toy
+{
+protected:
+    double price;
+
+public:
+    Toy(double price)
+    {
+        this->price = price;
+    }
+    
+    virtual ~Toy() {}
+    virtual void printType() = 0;
+    friend class ToyBox;
+};
+
+class CarToy : public Toy
+{
+private:
+    Color color;
+
+public:
+    CarToy(double price, Color color) : Toy(price)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->price = price;
+        this->color = color;
+    }
+
+    void printType()
+    {
+        cout << "This is a car toy\n";
+    }
+
+    friend class ToyBox;
+};
+
+class PuzzleToy : public Toy
+{
+private:
+    Size size;
+
+public:
+    PuzzleToy(double price, Size size) : Toy(price)
+    {
+        /*
+         * STUDENT ANSWER
+         */
+        this->price = price;
+        this->size = size;
+    }
+
+    void printType()
+    {
+        cout << "This is a puzzle toy\n";
+    }
+
+    friend class ToyBox;
+};
+
+class ToyBox
+{
+private:
+    Toy *toyBox[5];
+    int numberOfItems;
+
+public:
+    ToyBox()
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: set zero numberOfItems and nullptr toyBox
+         */
+        for (int i = 0; i < 5; ++i)
+        {
+            toyBox[i] = nullptr;
+        }
+        numberOfItems = 0;
+    }
+
+    ~ToyBox()
+    {
+        for (int i = 0; i < numberOfItems; ++i)
+        {
+            delete toyBox[i];
+        }
+    }
+
+    int addItem(const CarToy &carToy)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: function add a new Car toy to the box.
+                 If successfully added, the function returns the current number of toys in the box.
+                 If the box is full, return -1.
+         */
+        if (numberOfItems + 1 > 5)
+            return -1;
+        else
+        {
+            toyBox[numberOfItems] = new CarToy(carToy);
+            ++numberOfItems;
+            return numberOfItems;
+        }
+    }
+
+    int addItem(const PuzzleToy &puzzleToy)
+    {
+        /*
+         * STUDENT ANSWER
+         * TODO: function add a new Puzzle toy to the box.
+                 If successfully added, the function returns the current number of toys in the box.
+                 If the box is full, return -1.
+         */
+        if (numberOfItems + 1 > 5)
+            return -1;
+        else
+        {
+            toyBox[numberOfItems] = new PuzzleToy(puzzleToy);
+            ++numberOfItems;
+            return numberOfItems;
+        }
+    }
+
+    void printBox()
+    {
+        for (int i = 0; i < numberOfItems; i++)
+            toyBox[i]->printType();
+    }
+};

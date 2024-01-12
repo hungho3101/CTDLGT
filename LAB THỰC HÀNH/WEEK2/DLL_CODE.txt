@@ -1,0 +1,425 @@
+//////////////////////////////////////////////////// CAU 1 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template <class T>
+void DLinkedList<T>::add(const T &e)
+{
+    /* Insert an element into the end of the list. */
+    Node *newNode = new Node(e);
+    if (head == nullptr)
+    {
+        // Nếu danh sách trống, thiết lập nút mới làm cả đầu và đuôi
+        head = newNode;
+        tail = newNode;
+    }
+    else
+    {
+        // Thêm nút mới vào cuối danh sách
+        tail->next = newNode;
+        newNode->previous = tail;
+        tail = newNode;
+    }
+    count++;
+}
+
+template <class T>
+void DLinkedList<T>::add(int index, const T &e)
+{
+    /* Insert an element into the list at given index. */
+    Node *newNode = new Node(e);
+    if (index == 0)
+    {
+        // Chèn vào đầu danh sách
+        if (head == nullptr)
+        {
+            // Nếu danh sách trống, thiết lập nút mới làm cả đầu và đuôi
+            head = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            newNode->next = head;
+            head->previous = newNode;
+            head = newNode;
+        }
+    }
+    else if (index == count)
+    {
+        // Chèn vào cuối danh sách
+        tail->next = newNode;
+        newNode->previous = tail;
+        tail = newNode;
+    }
+    else
+    {
+        // Chèn vào giữa danh sách
+        Node *current = head;
+        for (int i = 0; i < index; i++)
+        {
+            current = current->next;
+        }
+        newNode->next = current;
+        newNode->previous = current->previous;
+        current->previous->next = newNode;
+        current->previous = newNode;
+    }
+    count++;
+}
+
+template <class T>
+int DLinkedList<T>::size()
+{
+    /* Return the length (size) of list */
+    return count;
+}
+
+//////////////////////////////////////////////////// CAU 2 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template <class T>
+T DLinkedList<T>::get(int index)
+{
+    /* Give the data of the element at given index in the list. */
+    Node *temp = head;
+    for (int i = 0; i < index; i++)
+        temp = temp->next;
+    return temp->data;
+}
+
+template <class T>
+void DLinkedList<T>::set(int index, const T &e)
+{
+    /* Assign new value for element at given index in the list */
+    Node *temp = head;
+    for (int i = 0; i < index; i++)
+        temp = temp->next;
+    temp->data = e;
+}
+
+template <class T>
+bool DLinkedList<T>::empty()
+{
+    /* Check if the list is empty or not. */
+    return (head == nullptr);
+}
+
+template <class T>
+int DLinkedList<T>::indexOf(const T &item)
+{
+    /* Return the first index wheter item appears in list, otherwise return -1 */
+    Node *temp = head;
+    int i = -1;
+    int index = -1;
+    while (temp != nullptr)
+    {
+        i++;
+        if (temp->data == item)
+        {
+            index = i;
+            break;
+        }
+        temp = temp->next;
+    }
+    return index;
+}
+
+template <class T>
+bool DLinkedList<T>::contains(const T &item)
+{
+    /* Check if item appears in the list */
+    return (indexOf(item) >= 0);
+}
+
+//////////////////////////////////////////////////// CAU 3 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template <class T>
+DLinkedList<T>::Iterator::Iterator(DLinkedList<T> *pList, bool begin)
+{
+    this->pList = pList;
+    if (begin)
+    {
+        this->current = pList->head;
+        this->index = 0;
+    }
+    else
+    {
+        this->current = NULL;
+        this->index = pList->count;
+    }
+}
+
+template <class T>
+typename DLinkedList<T>::Iterator &DLinkedList<T>::Iterator::operator=(const DLinkedList<T>::Iterator &iterator)
+{
+    this->current = iterator.current;
+    this->index = iterator.index;
+    this->pList = iterator.pList;
+    return *this;
+}
+
+template <class T>
+void DLinkedList<T>::Iterator::set(const T &e)
+{
+    if (this->current != NULL)
+        this->current->data = e;
+}
+
+template <class T>
+T &DLinkedList<T>::Iterator::operator*()
+{
+    if (this->current != NULL)
+        return this->current->data;
+    else
+        throw std::runtime_error("Error: dereferencing null pointer.");
+}
+
+template <class T>
+void DLinkedList<T>::Iterator::remove()
+{
+    if (this->current != NULL && this->pList != NULL)
+    {
+        Node *nodeToRemove = this->current;
+
+        if (nodeToRemove == this->pList->head)
+        {
+            this->pList->head = nodeToRemove->next;
+            if (this->pList->head != NULL)
+                this->pList->head->previous = NULL;
+            else
+                this->pList->tail = NULL;
+            this->current = NULL;
+        }
+        else
+        {
+            nodeToRemove->previous->next = nodeToRemove->next;
+            if (nodeToRemove == this->pList->tail)
+            {
+                this->pList->tail = nodeToRemove->previous;
+                this->current = NULL;
+            }
+            else
+            {
+                nodeToRemove->next->previous = nodeToRemove->previous;
+                this->current = nodeToRemove->previous;
+            }
+        }
+
+        delete nodeToRemove;
+        --this->pList->count; // Use -> operator to access count
+    }
+}
+
+template <class T>
+bool DLinkedList<T>::Iterator::operator!=(const DLinkedList::Iterator &iterator)
+{
+    return (this->current != iterator.current); // Use -> operator to access current
+}
+
+// Prefix ++ overload
+template <class T>
+typename DLinkedList<T>::Iterator &DLinkedList<T>::Iterator::operator++()
+{
+    if (this->current == NULL && pList != NULL)
+        current = pList->head; // If we are at the beginning of the list, move to the head. Use -> operator to access head and current.
+    else if (this->current != NULL)
+        current = current->next; // Otherwise, move to the next node. Use -> operator to access next and current.
+    return *this;                // Return a reference to the updated object
+}
+
+// Postfix ++ overload
+template <class T>
+typename DLinkedList<T>::Iterator DLinkedList<T>::Iterator::operator++(int)
+{
+    Iterator temp(*this); // Make a copy of the current state
+    ++(*this);            // Use the prefix version to increment this instance
+    return temp;          // Return the old state
+}
+
+//////////////////////////////////////////////////// CAU 4 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+template <class T>
+T DLinkedList<T>::removeAt(int index)
+{
+    /* Remove element at index and return removed value */
+    if (index < 0 || index >= count)
+    {
+        throw std::out_of_range("the input index is out of range!");
+    }
+    if (count == 1)
+    {
+        T k = head->data;
+        head = NULL;
+        tail = NULL;
+        count--;
+        return k;
+    }
+    if (index == 0)
+    {
+        T k = head->data;
+        head = head->next;
+        head->previous = NULL;
+        count--;
+        return k;
+    }
+    else if (index == count - 1)
+    {
+        T k = tail->data;
+        tail = tail->previous;
+        tail->next = NULL;
+        count--;
+        return k;
+    }
+    else
+    {
+        Node *temp = head;
+        for (int i = 0; i < index - 1; i++)
+        {
+            temp = temp->next;
+        }
+        T k = temp->next->data;
+        temp->next = temp->next->next;
+        temp->next->previous = temp;
+        count--;
+        return k;
+    }
+}
+
+template <class T>
+bool DLinkedList<T>::removeItem(const T &item)
+{
+    if (indexOf(item) == -1)
+        return false;
+    else
+    {
+        removeAt(indexOf(item));
+        return true;
+    }
+}
+
+template <class T>
+void DLinkedList<T>::clear()
+{
+    while (head != nullptr)
+    {
+        Node *temp = head;
+        head = head->next;
+        delete temp;
+    }
+    tail = nullptr;
+    count = 0;
+}
+
+//////////////////////////////////////////////////// CAU 5 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+DataLog::DataLog()
+{
+    // Add the first state with 0
+    logList.push_back(0);
+    currentState = logList.begin();
+}
+
+DataLog::DataLog(const int &data)
+{
+    // Add the first state with data
+    logList.push_back(data);
+    currentState = logList.begin();
+}
+
+void DataLog::addCurrentState(int number)
+{
+    /*
+     * TODO: Increase the value of current state by number
+     */
+    *currentState += number;
+}
+
+void DataLog::subtractCurrentState(int number)
+{
+    /*
+     * TODO: Decrease the value of current state by number
+     */
+    *currentState -= number;
+}
+
+void DataLog::save()
+{
+    /*
+     * TODO: This function will create a new state, copy the data of the currentState
+     *       and move the currentState Iterator to this new state. If there are other states behind the
+     *       currentState Iterator, we delete them all before creating a new state.
+     */
+    if (currentState != logList.end())
+    {
+        int data = *currentState;
+        currentState++;
+        // Delete states after the current state
+        logList.erase(currentState, logList.end());
+        // Create a new state
+        logList.push_back(data);
+        currentState = prev(logList.end());
+    }
+}
+
+void DataLog::undo()
+{
+    /*
+     * TODO: Switch to the previous state of the data
+     *       If this is the oldest state in the log, nothing changes
+     */
+    if (currentState != logList.begin())
+    {
+        currentState--;
+    }
+}
+
+void DataLog::redo()
+{
+    /*
+     * TODO: Switch to the latter state of the data
+     *       If this is the latest state in the log, nothing changes
+     */
+    if (currentState != prev(logList.end()))
+    {
+        currentState++;
+    }
+}
+
+//////////////////////////////////////////////////// CAU 6 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ListNode *reverse(ListNode *head, int a, int b)
+{
+    ListNode *dummy = new ListNode();
+    dummy->right = head;
+    head->left = dummy;
+
+    ListNode *node1 = dummy;
+    for (int i = 0; i < a - 1; ++i)
+        node1 = node1->right;
+
+    ListNode *node2 = node1->right;
+    for (int i = a; i < b; ++i)
+        node2 = node2->right;
+
+    ListNode *node3 = node2->right;
+    ListNode *prev = node1;
+    ListNode *curr = node1->right;
+    ListNode *next;
+
+    while (curr != node3)
+    {
+        next = curr->right;
+        curr->right = prev;
+        curr->left = next;
+        prev = curr;
+        curr = next;
+    }
+
+    node1->right->right = node3;
+    if (node3 != nullptr)
+        node3->left = node1->right;
+    node1->right = node2;
+
+    head = dummy->right;
+    head->left = nullptr;
+    delete dummy;
+
+    return head;
+}

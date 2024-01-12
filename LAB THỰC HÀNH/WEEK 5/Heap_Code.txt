@@ -1,0 +1,267 @@
+// 1111111111111111111111111111111111111111111111111
+// 1111111111111111111111111111111111111111111111111
+template <class T>
+int Heap<T>::size()
+{
+    return count;
+}
+
+template <class T>
+bool Heap<T>::isEmpty()
+{
+    return count == 0;
+}
+
+template <class T>
+T Heap<T>::peek()
+{
+    if (count == 0)
+    {
+        return -1;
+    }
+    return elements[0];
+}
+
+template <class T>
+bool Heap<T>::contains(T item)
+{
+    for (int i = 0; i < count; i++)
+    {
+        if (elements[i] == item)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+template <class T>
+bool Heap<T>::pop()
+{
+    if (count == 0)
+    {
+        return false;
+    }
+    elements[0] = elements[count - 1];
+    count--;
+    reheapDown(0);
+    return true;
+}
+
+// 2222222222222222222222222222222222222222222222222
+// 2222222222222222222222222222222222222222222222222
+template <class T>
+void Heap<T>::push(T item)
+{
+    ensureCapacity(count + 1);
+    elements[count] = item;
+    reheapUp(count);
+    count++;
+}
+
+template <class T>
+void Heap<T>::ensureCapacity(int minCapacity)
+{
+    if (minCapacity > capacity)
+    {
+        T *old = elements;
+        capacity *= 2;
+        elements = new T[capacity];
+        for (int i = 0; i < count; i++)
+        {
+            elements[i] = old[i];
+        }
+        delete[] old;
+    }
+}
+
+template <class T>
+void Heap<T>::reheapUp(int position)
+{
+    int parent = (position - 1) / 2;
+    if (position > 0 && elements[position] > elements[parent])
+    {
+        swap(elements[position], elements[parent]);
+        reheapUp(parent);
+    }
+}
+
+// 3333333333333333333333333333333333333333333333333
+// 3333333333333333333333333333333333333333333333333
+void swap(int &a, int &b)
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void reheapDown(int maxHeap[], int numberOfElements, int index)
+{
+    int largest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if (left < numberOfElements && maxHeap[left] > maxHeap[largest])
+        largest = left;
+
+    if (right < numberOfElements && maxHeap[right] > maxHeap[largest])
+        largest = right;
+
+    if (largest != index)
+    {
+        swap(maxHeap[index], maxHeap[largest]);
+        reheapDown(maxHeap, numberOfElements, largest);
+    }
+}
+
+void reheapUp(int maxHeap[], int numberOfElements, int index)
+{
+    int parent = (index - 1) / 2;
+
+    if (maxHeap[parent] < maxHeap[index])
+    {
+        swap(maxHeap[index], maxHeap[parent]);
+        reheapUp(maxHeap, numberOfElements, parent);
+    }
+}
+
+// 4444444444444444444444444444444444444444444444444
+// 4444444444444444444444444444444444444444444444444
+template <class T>
+int Heap<T>::getItem(T item)
+{
+    for (int i = 0; i < count; i++)
+    {
+        if (elements[i] == item)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+template <class T>
+void Heap<T>::remove(T item)
+{
+    int index = getItem(item);
+    if (index == -1)
+    {
+        return;
+    }
+
+    swap(elements[index], elements[count - 1]);
+    count--;
+    reheapDown(index);
+    reheapUp(index);
+}
+
+template <class T>
+void Heap<T>::clear()
+{
+    delete[] elements;
+    capacity = 10;
+    count = 0;
+    elements = new T[capacity];
+}
+
+// 5555555555555555555555555555555555555555555555555
+// 5555555555555555555555555555555555555555555555555
+// Helping functions go here
+static void heapify(T *start, T *end, int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && start[left] > start[largest])
+        largest = left;
+
+    if (right < n && start[right] > start[largest])
+        largest = right;
+
+    if (largest != i)
+    {
+        swap(start[i], start[largest]);
+        heapify(start, end, n, largest);
+    }
+}
+
+static void heapSort(T *start, T *end)
+{
+    int n = end - start;
+
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(start, end, n, i);
+
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(start[0], start[i]);
+        heapify(start, end, i, 0);
+    }
+
+    Sorting<T>::printArray(start, end);
+}
+
+// 6666666666666666666666666666666666666666666666666
+// 6666666666666666666666666666666666666666666666666
+#include <queue>
+#include <string>
+using namespace std;
+
+class PrinterQueue
+{
+    struct compare
+    {
+        bool operator()(const pair<pair<int, int>, string> &a, const pair<pair<int, int>, string> &b)
+        {
+            if (a.first.first != b.first.first)
+            {
+                return a.first.first < b.first.first;
+            }
+            else
+            {
+                return a.first.second > b.first.second;
+            }
+        }
+    };
+
+    priority_queue<pair<pair<int, int>, string>, vector<pair<pair<int, int>, string>>, compare> pq;
+    int order = 0; // to keep track of the order of requests
+
+public:
+    void addNewRequest(int priority, string fileName)
+    {
+        pq.push(make_pair(make_pair(priority, order), fileName));
+        order++;
+    }
+
+    void print()
+    {
+        if (pq.empty())
+        {
+            cout << "No file to print" << endl;
+        }
+        else
+        {
+            cout << pq.top().second << endl;
+            pq.pop();
+        }
+    }
+};
+
+// 7777777777777777777777777777777777777777777777777
+// 7777777777777777777777777777777777777777777777777
+int leastAfter(vector<int> &nums, int k)
+{
+    priority_queue<int, vector<int>, greater<int>> pq(nums.begin(), nums.end());
+
+    for (int i = 0; i < k; i++)
+    {
+        int smallest = pq.top();
+        pq.pop();
+
+        pq.push(smallest * 2);
+    }
+
+    return pq.top();
+}

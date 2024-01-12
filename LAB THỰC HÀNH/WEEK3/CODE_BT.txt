@@ -1,0 +1,261 @@
+// 11111111111111111111111111111111111111111111111
+// 11111111111111111111111111111111111111111111111
+
+void BFS()
+{
+    if (root == NULL)
+        return;
+
+    // Tạo một hàng đợi cho BFS
+    queue<Node *> q;
+
+    // Thêm root vào hàng đợi và khởi tạo chiều cao
+    q.push(root);
+
+    while (q.empty() == false)
+    {
+        // In phần tử đầu hàng đợi và loại bỏ nó khỏi hàng đợi
+        Node *node = q.front();
+        cout << node->value << " ";
+        q.pop();
+
+        /* Thêm con bên trái vào hàng đợi */
+        if (node->pLeft != NULL)
+            q.push(node->pLeft);
+
+        /* Thêm con bên phải vào hàng đợi */
+        if (node->pRight != NULL)
+            q.push(node->pRight);
+    }
+}
+
+// 2222222222222222222222222222222222222222222222222222
+// 2222222222222222222222222222222222222222222222222222
+// Function to calculate the sum of the longest path in a binary tree
+int longestPathSum(BTNode *root)
+{
+    // If the tree is empty, return 0
+    if (root == NULL)
+    {
+        return 0;
+    }
+
+    // Initialize the maximum sum and maximum depth to 0
+    int maxSum = 0;
+    int maxDepth = 0;
+
+    // Create a stack to store the nodes and their current sum and depth
+    std::stack<std::pair<BTNode *, std::pair<int, int>>> s;
+
+    // Start with the root node, its value as the initial sum, and depth as 1
+    s.push({root, {root->val, 1}});
+
+    // Continue until all nodes have been processed
+    while (!s.empty())
+    {
+        // Get the current node, sum and depth from the top of the stack
+        auto node = s.top().first;
+        auto sum = s.top().second.first;
+        auto depth = s.top().second.second;
+
+        // Remove the top element from the stack
+        s.pop();
+
+        // If it's a leaf node (both left and right children are NULL)
+        if (node->left == NULL && node->right == NULL)
+        {
+            // If the current path is longer or equal but has a larger sum than the maximum found so far
+            if (depth > maxDepth || (depth == maxDepth && sum > maxSum))
+            {
+                // Update the maximum sum and depth
+                maxSum = sum;
+                maxDepth = depth;
+            }
+        }
+
+        // If there's a left child, add it to the stack with its sum and depth
+        if (node->left != NULL)
+        {
+            s.push({node->left, {sum + node->left->val, depth + 1}});
+        }
+
+        // If there's a right child, add it to the stack with its sum and depth
+        if (node->right != NULL)
+        {
+            s.push({node->right, {sum + node->right->val, depth + 1}});
+        }
+    }
+
+    // Return the maximum sum found
+    return maxSum;
+}
+
+// 33333333333333333333333333333333333333333333333333333
+// 33333333333333333333333333333333333333333333333333333
+
+// Function to find the lowest common ancestor of two nodes in a binary tree
+int lowestAncestor(BTNode *root, int a, int b)
+{
+    if (root == NULL)
+    { // If the root is NULL, return -1
+        return -1;
+    }
+    if (root->val == a || root->val == b)
+    { // If the root is one of the nodes we are looking for, return its value
+        return root->val;
+    }
+    int left = lowestAncestor(root->left, a, b);   // Recursively call the function on the left child node
+    int right = lowestAncestor(root->right, a, b); // Recursively call the function on the right child node
+
+    if (left != -1 && right != -1)
+    { // If both calls return a value other than -1, return the value of the root
+        return root->val;
+    }
+    if (left != -1)
+    { // If only the call on the left child node returns a value other than -1, return that value
+        return left;
+    }
+    return right; // Otherwise, return the value returned by the call on the right child node
+}
+
+// 44444444444444444444444444444444444444444444444444444
+// 44444444444444444444444444444444444444444444444444444
+
+// Function to calculate the sum of all digit path numbers in a binary tree
+int sumDigitPath(BTNode *root, int val = 0, int mod = 27022001)
+{
+    // If the node is NULL, return 0
+    if (root == NULL)
+        return 0;
+
+    // Calculate the current value by shifting the previous value left by one digit (multiplying by 10)
+    // and adding the value of the current node. This is done modulo 'mod' to prevent overflow.
+    val = ((10LL * val) + root->val) % mod;
+
+    // If it's a leaf node (both left and right child nodes are NULL), return the current value
+    if (root->left == NULL && root->right == NULL)
+        return val;
+
+    // If it's not a leaf node, recursively calculate the sum for the left and right subtrees
+    // and return their sum modulo 'mod'
+    return (sumDigitPath(root->left, val) + sumDigitPath(root->right, val)) % mod;
+}
+
+// 55555555555555555555555555555555555555555555555555555
+// 55555555555555555555555555555555555555555555555555555
+
+// Hàm trợ giúp để đếm số nút có hai con
+int countTwoChildrenNodeHelper(Node *node)
+{
+    // Nếu nút hiện tại là NULL, trả về 0
+    if (node == NULL)
+        return 0;
+    int count = 0;
+    // Nếu nút hiện tại có cả con trái và con phải, tăng biến đếm
+    if (node->pLeft != NULL && node->pRight != NULL)
+        count++;
+    // Gọi đệ quy hàm cho con trái và con phải của nút hiện tại
+    return count + countTwoChildrenNodeHelper(node->pLeft) + countTwoChildrenNodeHelper(node->pRight);
+}
+
+// Hàm để khởi tạo hàm trợ giúp
+int countTwoChildrenNode()
+{
+    // Bắt đầu từ gốc của cây
+    return countTwoChildrenNodeHelper(root);
+}
+
+// 666666666666666666666666666666666666666666666666666
+// 666666666666666666666666666666666666666666666666666
+
+// STUDENT ANSWER BEGIN
+
+// Hàm getHeight() tính chiều cao của cây nhị phân
+int getHeight(Node *node)
+{
+    if (node == NULL)
+        return 0;
+    else
+        return max(getHeight(node->pLeft), getHeight(node->pRight)) + 1;
+}
+
+int getHeight()
+{
+    return getHeight(root);
+}
+
+// Hàm preOrder() duyệt cây theo thứ tự trước (gốc -> trái -> phải)
+void preOrder(Node *node, stringstream &ss)
+{
+    if (node == NULL)
+        return;
+    ss << node->value << " ";
+    preOrder(node->pLeft, ss);
+    preOrder(node->pRight, ss);
+}
+
+string preOrder()
+{
+    stringstream ss;
+    preOrder(root, ss);
+    return ss.str();
+}
+
+// Hàm inOrder() duyệt cây theo thứ tự giữa (trái -> gốc -> phải)
+void inOrder(Node *node, stringstream &ss)
+{
+    if (node == NULL)
+        return;
+    inOrder(node->pLeft, ss);
+    ss << node->value << " ";
+    inOrder(node->pRight, ss);
+}
+
+string inOrder()
+{
+    stringstream ss;
+    inOrder(root, ss);
+    return ss.str();
+}
+
+// Hàm postOrder() duyệt cây theo thứ tự sau (trái -> phải -> gốc)
+void postOrder(Node *node, stringstream &ss)
+{
+    if (node == NULL)
+        return;
+    postOrder(node->pLeft, ss);
+    postOrder(node->pRight, ss);
+    ss << node->value << " ";
+}
+
+string postOrder()
+{
+    stringstream ss;
+    postOrder(root, ss);
+    return ss.str();
+}
+
+// STUDENT ANSWER END
+
+// 777777777777777777777777777777777777777777777777
+// 777777777777777777777777777777777777777777777777
+
+int sumOfLeafNodes(Node *node)
+{
+    // Base case: if node is null, return 0
+    if (node == NULL)
+        return 0;
+
+    // If this node is a leaf node, return its value
+    if (node->pLeft == NULL && node->pRight == NULL)
+        return node->value;
+
+    // Otherwise, return sum of values of leaf nodes in left and right subtrees
+    return sumOfLeafNodes(node->pLeft) + sumOfLeafNodes(node->pRight);
+}
+
+int sumOfLeafs()
+{
+    // Call the helper function starting from the root
+    return sumOfLeafNodes(root);
+}

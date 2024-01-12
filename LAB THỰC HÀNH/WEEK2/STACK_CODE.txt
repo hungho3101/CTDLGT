@@ -1,0 +1,317 @@
+//////////////////////////////////////////////////// CAU 1 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int baseballScore(string ops)
+{
+    /*TODO*/
+    stack<int> st;
+    int len = ops.length();
+    for (int i = 0; i < len; i++)
+    {
+        // cout << ops[i];
+        if (ops[i] >= '1' && ops[i] <= '9')
+            st.push(ops[i] - '0');
+        if (ops[i] == 'C')
+            st.pop();
+        if (ops[i] == 'D')
+        {
+            int temp = st.top() * 2;
+            st.push(temp);
+        }
+        if (ops[i] == '+')
+        {
+            int n1 = st.top();
+            st.pop();
+            int n2 = st.top();
+            st.push(n1);
+            st.push(n1 + n2);
+        }
+    }
+    int sc = 0;
+    int sizest = st.size();
+    for (int i = 0; i < sizest; i++)
+    {
+        sc += st.top();
+        // cout << st.top() << " ";
+        st.pop();
+    }
+    return sc;
+}
+
+//////////////////////////////////////////////////// CAU 2 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void push(T item)
+{
+    // TODO: Push new element into the top of the stack
+    list.add(item);
+}
+
+T pop()
+{
+    // TODO: Remove an element on top of the stack
+    if (empty())
+    {
+        // Xử lý khi ngăn xếp rỗng
+        // Bạn có thể ném một ngoại lệ hoặc trả về giá trị mặc định
+        // Trong ví dụ này, tôi sẽ trả về giá trị mặc định của kiểu T
+        return T();
+    }
+
+    // Loại bỏ phần tử ở cuối danh sách liên kết (tương đương với đỉnh của ngăn xếp)
+    // Trả về phần tử bị loại bỏ
+    return list.removeAt(list.size() - 1);
+}
+
+T top()
+{
+    // TODO: Get value of the element on top of the stack
+    if (empty())
+    {
+        // Xử lý khi ngăn xếp rỗng
+        // Bạn có thể ném một ngoại lệ hoặc trả về giá trị mặc định
+        // Trong ví dụ này, tôi sẽ trả về giá trị mặc định của kiểu T
+        return T();
+    }
+
+    // Lấy phần tử ở cuối danh sách liên kết (tương đương với đỉnh của ngăn xếp)
+    return list.get(list.size() - 1);
+}
+
+bool empty()
+{
+    // TODO: Determine if the stack is empty
+    return list.empty();
+}
+
+int size()
+{
+    // TODO: Get the size of the stack
+    return list.size();
+}
+
+void clear()
+{
+    // TODO: Clear all elements of the stack
+    list.clear();
+}
+
+//////////////////////////////////////////////////// CAU 3 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// iostream, stack and vector are included
+
+vector<int> nextGreater(vector<int> &arr)
+{
+    vector<int> temp;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        int tempint = -1;
+        for (int j = i + 1; j < arr.size(); j++)
+            if (arr[j] > arr[i])
+            {
+                tempint = arr[j];
+                break;
+            }
+        temp.push_back(tempint);
+    }
+    return temp;
+}
+
+//////////////////////////////////////////////////// CAU 4 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int evaluatePostfix(string expr)
+{
+    stack<int> operands; // Khởi tạo ngăn xếp để lưu trữ các toán hạng
+
+    string token;
+    size_t pos = 0;
+
+    while (pos < expr.size())
+    {
+        if (expr[pos] == ' ')
+        {
+            // Bỏ qua dấu cách
+            pos++;
+        }
+        else if (isdigit(expr[pos]) || (expr[pos] == '-' && isdigit(expr[pos + 1])))
+        {
+            // Nếu ký tự là đầu của một số, thực hiện phân tích
+            int num = 0;
+            int sign = 1;
+            if (expr[pos] == '-')
+            {
+                sign = -1;
+                pos++;
+            }
+            while (pos < expr.size() && isdigit(expr[pos]))
+            {
+                num = num * 10 + (expr[pos] - '0');
+                pos++;
+            }
+            operands.push(num * sign);
+        }
+        else
+        {
+            // Nếu ký tự là toán tử, lấy hai toán hạng và thực hiện phép tính
+            int operand2 = operands.top();
+            operands.pop();
+            int operand1 = operands.top();
+            operands.pop();
+
+            switch (expr[pos])
+            {
+            case '+':
+                operands.push(operand1 + operand2);
+                break;
+            case '-':
+                operands.push(operand1 - operand2);
+                break;
+            case '*':
+                operands.push(operand1 * operand2);
+                break;
+            case '/':
+                operands.push(operand1 / operand2);
+                break;
+            }
+            pos++;
+        }
+    }
+
+    // Giá trị của biểu thức là phần tử trên cùng trong ngăn xếp
+    return operands.top();
+}
+
+//////////////////////////////////////////////////// CAU 5 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool canEatFood(int maze[5][5], int fx, int fy)
+{
+    /*TODO*/
+    int n = 5; // Kích thước của mê cung
+
+    // Tạo một mảng 2D để theo dõi các ô đã được thăm
+    bool visited[5][5];
+    memset(visited, false, sizeof(visited));
+
+    std::stack<node> st;
+    node start(0, 0);
+    st.push(start);
+
+    // Các hướng di chuyển (lên, trái, xuống, phải)
+    int dx[] = {-1, 0, 1, 0};
+    int dy[] = {0, -1, 0, 1};
+
+    while (!st.empty())
+    {
+        node current = st.top();
+        st.pop();
+
+        int x = current.x;
+        int y = current.y;
+
+        // Đánh dấu ô hiện tại là đã thăm
+        visited[x][y] = true;
+
+        if (x == fx && y == fy)
+        {
+            return true; // Tìm thấy thức ăn
+        }
+
+        // Thử các hướng di chuyển có thể
+        for (int i = 0; i < 4; ++i)
+        {
+            int newX = x + dx[i];
+            int newY = y + dy[i];
+
+            if (newX >= 0 && newX < n && newY >= 0 && newY < n && !visited[newX][newY] && maze[newX][newY] == 1)
+            {
+                node next(newX, newY);
+                st.push(next);
+            }
+        }
+    }
+
+    return false; // Không tìm thấy đường đi đến thức ăn
+}
+
+//////////////////////////////////////////////////// CAU 6 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+string removeDuplicates(string S)
+{
+    /*TODO*/
+    stack<char> charStack;
+
+    for (char c : S)
+    {
+        // Nếu ngăn xếp không rỗng và ký tự hiện tại giống ký tự đầu ngăn xếp, thì loại bỏ nó.
+        if (!charStack.empty() && charStack.top() == c)
+        {
+            charStack.pop();
+        }
+        else
+        {
+            // Ngược lại, đẩy ký tự hiện tại vào ngăn xếp.
+            charStack.push(c);
+        }
+    }
+
+    // Xây dựng chuỗi kết quả từ các ký tự còn lại trong ngăn xếp.
+    string result = "";
+    while (!charStack.empty())
+    {
+        result = charStack.top() + result; // Thêm vào đầu chuỗi kết quả
+        charStack.pop();
+    }
+
+    return result;
+}
+
+//////////////////////////////////////////////////// CAU 7 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+vector<int> stock_span(const vector<int> &ns)
+{
+    vector<int> spans(ns.size());
+    stack<int> st;
+    for (size_t i = 0; i < ns.size(); ++i)
+    {
+        while (!st.empty() && ns[st.top()] < ns[i])
+        {
+            st.pop();
+        }
+        spans[i] = (st.empty()) ? (i + 1) : (i - st.top());
+        st.push(i);
+    }
+    return spans;
+}
+
+//////////////////////////////////////////////////// CAU 8 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool isValidParentheses(string s)
+{
+    /*TODO*/
+    stack<char> stk;
+
+    for (char c : s)
+    {
+        if (c == '(' || c == '[' || c == '{')
+        {
+            stk.push(c);
+        }
+        else
+        {
+            if (stk.empty())
+            {
+                return false; // Không có dấu mở nào tương ứng.
+            }
+
+            char top = stk.top();
+            stk.pop();
+
+            if ((c == ')' && top != '(') ||
+                (c == ']' && top != '[') ||
+                (c == '}' && top != '{'))
+            {
+                return false; // Dấu đóng không khớp với dấu mở tương ứng.
+            }
+        }
+    }
+
+    return stk.empty(); // Kiểm tra xem có dấu mở nào còn sót lại trong ngăn xếp hay không.
+}

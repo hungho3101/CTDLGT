@@ -1,0 +1,28 @@
+# Compile the program
+g++ -o myprogram main.cpp
+
+# Loop over all test files
+$S = 2001
+$E = 2100
+$N = $E - $S + 1
+$P = 0
+for ($i=$S; $i -le $E; $i++) {./myprogram "test/input/input${i}.txt" | Out-File "test/solution_you/output${i}.txt"}
+
+# Compare
+for ($i=$S; $i -le $E; $i++) {
+    $slsContent = Get-Content ".\test\solution\output${i}.txt"
+    $outputContent = Get-Content ".\test\solution_you\output${i}.txt"
+    $differences = Compare-Object $slsContent $outputContent
+
+    if ($differences) {
+        Write-Output "output${i}.txt: Difference"
+    } else {
+	$P = $P + 1
+        Write-Output "output${i}.txt: Pass"
+    }
+}
+$P = ($P / $N) * 100
+
+Write-Output "============= TESTCASE: $S - $E. PASS: $P % ============="
+Write-Output "====================== PHIHUNG ======================"
+

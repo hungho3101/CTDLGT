@@ -1,0 +1,646 @@
+/////////////////// QUESTION 1 ///////////////////
+/////////////////// QUESTION 1 ///////////////////
+LLNode *addLinkedList(LLNode *l0, LLNode *l1)
+{
+  LLNode *dummyHead = new LLNode();
+  LLNode *current = dummyHead;
+  int carry = 0;
+
+  while (l0 || l1)
+  {
+    int sum = carry;
+    if (l0)
+    {
+      sum += l0->val;
+      l0 = l0->next;
+    }
+    if (l1)
+    {
+      sum += l1->val;
+      l1 = l1->next;
+    }
+
+    carry = sum / 10;
+    current->next = new LLNode(sum % 10, nullptr);
+    current = current->next;
+  }
+
+  if (carry > 0)
+  {
+    current->next = new LLNode(carry, nullptr);
+  }
+
+  LLNode *result = dummyHead->next;
+  delete dummyHead;
+
+  return result;
+}
+
+/////////////////// QUESTION 2 ///////////////////
+/////////////////// QUESTION 2 ///////////////////
+void Polynomial::insertTerm(const Term &term)
+{
+  bool check = false;
+  for (int i = 0; i < terms->size(); i++)
+  {
+    if (term.exp == (terms->get(i)).exp)
+    {
+      Term newterm(term.coeff + (terms->get(i)).coeff, term.exp);
+      if (newterm.coeff == 0)
+        terms->removeAt(i);
+      else
+        terms->set(i, newterm);
+      check = true;
+      break;
+    }
+    else if ((i < terms->size() - 1) &&
+             (term.exp < (terms->get(i)).exp) &&
+             (term.exp > (terms->get(i + 1)).exp))
+    {
+      terms->add(i + 1, term);
+      check = true;
+      break;
+    }
+  }
+  if (!check)
+  {
+    if ((terms->size() == 0) || (term.exp > (terms->get(0)).exp))
+      terms->add(0, term);
+    else
+      terms->add(term);
+  }
+}
+
+void Polynomial::insertTerm(double coeff, int exp)
+{
+  if (coeff != 0)
+  {
+    Term term;
+    term.coeff = coeff;
+    term.exp = exp;
+    insertTerm(term);
+  }
+}
+
+/////////////////// QUESTION 3 ///////////////////
+/////////////////// QUESTION 3 ///////////////////
+template <class T>
+SLinkedList<T>::Iterator::Iterator(SLinkedList<T> *pList, bool begin)
+{
+  this->pList = pList;
+  if (begin)
+  {
+    if (pList != nullptr && pList->head != nullptr)
+    {
+      index = 0;
+      current = pList->head;
+    }
+    else
+    {
+      index = -1;
+      current = nullptr;
+    }
+  }
+  else
+  {
+    current = nullptr;
+    if (pList != nullptr)
+      index = pList->count;
+    else
+      index = 0;
+  }
+}
+
+template <class T>
+typename SLinkedList<T>::Iterator &SLinkedList<T>::Iterator::operator=(const Iterator &iterator)
+{
+  current = iterator.current;
+  index = iterator.index;
+  pList = iterator.pList;
+  return *this;
+}
+
+template <class T>
+void SLinkedList<T>::Iterator::remove()
+{
+  if (current == nullptr)
+    throw std::out_of_range("Segmentation fault!");
+  if (index == 0)
+  {
+    pList->removeAt(0);
+    current = nullptr;
+    index = -1;
+  }
+  else
+  {
+    int newIndex = index - 1;
+    current->data = pList->get(newIndex);
+    pList->removeAt(newIndex);
+    index = newIndex;
+  }
+}
+
+template <class T>
+void SLinkedList<T>::Iterator::set(const T &e)
+{
+  if (current == nullptr)
+    throw std::out_of_range("Segmentation fault!");
+  current->data = e;
+}
+
+template <class T>
+T &SLinkedList<T>::Iterator::operator*()
+{
+  if (current == nullptr)
+    throw std::out_of_range("Segmentation fault!");
+  return current->data;
+}
+
+template <class T>
+bool SLinkedList<T>::Iterator::operator!=(const Iterator &iterator)
+{
+  return current != iterator.current || index != iterator.index;
+}
+
+template <class T>
+typename SLinkedList<T>::Iterator &SLinkedList<T>::Iterator::operator++()
+{
+  if (current == nullptr)
+    throw std::out_of_range("Segmentation fault!");
+  index += 1;
+  current = current->next;
+  return *this;
+}
+
+template <class T>
+typename SLinkedList<T>::Iterator SLinkedList<T>::Iterator::operator++(int)
+{
+  Iterator temp = *this;
+  ++(*this);
+  return temp;
+}
+
+/////////////////// QUESTION 4 ///////////////////
+/////////////////// QUESTION 4 ///////////////////
+void LinkedList::partition(int k)
+{
+  if (head == NULL || head->next == NULL)
+  {
+    // No need to partition if the list is empty or has only one element.
+    return;
+  }
+
+  Node *group1_head = NULL;
+  Node *group1_tail = NULL;
+  Node *group2_head = NULL;
+  Node *group2_tail = NULL;
+  Node *group3_head = NULL;
+  Node *group3_tail = NULL;
+  Node *current = head;
+
+  while (current != NULL)
+  {
+    Node *next = current->next;
+
+    if (current->value < k)
+    {
+      // Add to group I
+      if (group1_tail == NULL)
+      {
+        group1_head = current;
+        group1_tail = current;
+        current->next = NULL;
+      }
+      else
+      {
+        group1_tail->next = current;
+        group1_tail = current;
+        current->next = NULL;
+      }
+    }
+    else if (current->value == k)
+    {
+      // Add to group II
+      if (group2_tail == NULL)
+      {
+        group2_head = current;
+        group2_tail = current;
+        current->next = NULL;
+      }
+      else
+      {
+        group2_tail->next = current;
+        group2_tail = current;
+        current->next = NULL;
+      }
+    }
+    else
+    {
+      // Add to group III
+      if (group3_tail == NULL)
+      {
+        group3_head = current;
+        group3_tail = current;
+        current->next = NULL;
+      }
+      else
+      {
+        group3_tail->next = current;
+        group3_tail = current;
+        current->next = NULL;
+      }
+    }
+
+    current = next;
+  }
+
+  // Concatenate the three groups
+  if (group1_head == NULL)
+  {
+    // If group I is empty, the new head becomes group II (if not empty) or group III.
+    if (group2_head != NULL)
+    {
+      head = group2_head;
+      group2_tail->next = group3_head;
+    }
+    else
+    {
+      head = group3_head;
+    }
+  }
+  else
+  {
+    head = group1_head;
+    group1_tail->next = group2_head;
+    if (group2_head != NULL)
+    {
+      group2_tail->next = group3_head;
+    }
+    else
+    {
+      group1_tail->next = group3_head;
+    }
+  }
+
+  // Update the tail pointer if necessary
+  if (group3_tail != NULL)
+  {
+    tail = group3_tail;
+  }
+  else if (group2_tail != NULL)
+  {
+    tail = group2_tail;
+  }
+  else
+  {
+    tail = group1_tail;
+  }
+}
+
+/////////////////// QUESTION 5 ///////////////////
+/////////////////// QUESTION 5 ///////////////////
+template <class T>
+void SLinkedList<T>::add(const T &e)
+{
+  /* Insert an element into the end of the list. */
+  // Create a new node with the given data
+  Node *newNode = new Node(e, nullptr);
+
+  if (head == nullptr)
+  {
+    // If the list is empty, set both head and tail to the new node
+    head = newNode;
+    tail = newNode;
+  }
+  else
+  {
+    // Otherwise, add the new node to the end of the list
+    tail->next = newNode;
+    tail = newNode;
+  }
+
+  count++; // Increment the size of the list
+}
+
+template <class T>
+void SLinkedList<T>::add(int index, const T &e)
+{
+  /* Insert an element into the list at given index. */
+  if (index < 0 || index > count)
+  {
+    // Check if the index is out of bounds
+    throw std::out_of_range("Index out of bounds");
+  }
+
+  if (index == count)
+  {
+    // If the index is equal to the size of the list, add to the end
+    add(e);
+    return;
+  }
+
+  Node *newNode = new Node(e, nullptr);
+
+  if (index == 0)
+  {
+    // If adding at the beginning, update the head
+    newNode->next = head;
+    head = newNode;
+  }
+  else
+  {
+    // Otherwise, find the node before the insertion point
+    Node *prevNode = head;
+    for (int i = 0; i < index - 1; i++)
+    {
+      prevNode = prevNode->next;
+    }
+
+    // Update pointers to insert the new node
+    newNode->next = prevNode->next;
+    prevNode->next = newNode;
+  }
+
+  count++; // Increment the size of the list
+}
+
+template <class T>
+int SLinkedList<T>::size()
+{
+  /* Return the length (size) of list */
+  return count;
+}
+
+/////////////////// QUESTION 6 ///////////////////
+/////////////////// QUESTION 6 ///////////////////
+template <class T>
+T SLinkedList<T>::get(int index)
+{
+  /* Give the data of the element at given index in the list. */
+  if (index < 0 || index >= count)
+  {
+    throw std::out_of_range("Index out of range");
+  }
+
+  Node *current = head;
+  for (int i = 0; i < index; i++)
+  {
+    current = current->next;
+  }
+
+  return current->data;
+}
+
+template <class T>
+void SLinkedList<T>::set(int index, const T &e)
+{
+  /* Assign new value for element at given index in the list */
+  if (index < 0 || index >= count)
+  {
+    throw std::out_of_range("Index out of range");
+  }
+
+  Node *current = head;
+  for (int i = 0; i < index; i++)
+  {
+    current = current->next;
+  }
+
+  current->data = e;
+}
+
+template <class T>
+bool SLinkedList<T>::empty()
+{
+  /* Check if the list is empty or not. */
+  return count == 0;
+}
+
+template <class T>
+int SLinkedList<T>::indexOf(const T &item)
+{
+  /* Return the first index wheter item appears in list, otherwise return -1 */
+  int index = 0;
+  Node *current = head;
+  while (current != nullptr)
+  {
+    if (current->data == item)
+    {
+      return index;
+    }
+    current = current->next;
+    index++;
+  }
+  return -1;
+}
+
+template <class T>
+bool SLinkedList<T>::contains(const T &item)
+{
+  /* Check if item appears in the list */
+  return indexOf(item) != -1;
+}
+/////////////////// QUESTION 7 ///////////////////
+/////////////////// QUESTION 7 ///////////////////
+template <class T>
+T SLinkedList<T>::removeAt(int index)
+{
+  /* Remove element at index and return removed value */
+  if (index < 0 || index >= count)
+  {
+    throw std::out_of_range("Index out of range");
+  }
+
+  if (index == 0)
+  {
+    if (empty())
+    {
+      throw std::runtime_error("List is empty, cannot remove from the front");
+    }
+
+    Node *toRemove = head;
+    T removedValue = toRemove->data;
+    head = head->next;
+    delete toRemove;
+
+    if (head == nullptr)
+    {
+      // If the list is now empty, update tail as well
+      tail = nullptr;
+    }
+
+    count--;
+
+    return removedValue;
+  }
+  else if (index == count - 1)
+  {
+    if (empty())
+    {
+      throw std::runtime_error("List is empty, cannot remove from the back");
+    }
+
+    if (count == 1)
+    {
+      // If there's only one element in the list, remove it and update head and tail
+      T removedValue = head->data;
+      delete head;
+      head = nullptr;
+      tail = nullptr;
+      count--;
+      return removedValue;
+    }
+    else
+    {
+      // If there are multiple elements, traverse the list to find the second-to-last node
+      Node *previous = head;
+      while (previous->next != tail)
+      {
+        previous = previous->next;
+      }
+
+      T removedValue = tail->data;
+      delete tail;
+      tail = previous;
+      tail->next = nullptr;
+      count--;
+
+      return removedValue;
+    }
+  }
+  else
+  {
+    Node *previous = head;
+    for (int i = 0; i < index - 1; i++)
+    {
+      previous = previous->next;
+    }
+    Node *toRemove = previous->next;
+    T removedValue = toRemove->data;
+    previous->next = toRemove->next;
+    delete toRemove;
+    count--;
+    return removedValue;
+  }
+}
+
+template <class T>
+bool SLinkedList<T>::removeItem(const T &item)
+{
+  /* Remove the first apperance of item in list and return true, otherwise return false */
+  Node *current = head;
+  Node *previous = nullptr;
+
+  while (current != nullptr)
+  {
+    if (current->data == item)
+    {
+      if (previous != nullptr)
+      {
+        previous->next = current->next;
+        if (current == tail)
+        {
+          tail = previous;
+        }
+      }
+      else
+      {
+        // Removing the first element
+        head = current->next;
+        if (head == nullptr)
+        {
+          tail = nullptr;
+        }
+      }
+      delete current;
+      count--;
+      return true;
+    }
+    previous = current;
+    current = current->next;
+  }
+
+  return false; // Item not found
+}
+
+template <class T>
+void SLinkedList<T>::clear()
+{
+  /* Remove all elements in list */
+  while (head != nullptr)
+  {
+    Node *toRemove = head;
+    head = head->next;
+    delete toRemove;
+  }
+  tail = nullptr;
+  count = 0;
+}
+
+/////////////////// QUESTION 8 ///////////////////
+/////////////////// QUESTION 8 ///////////////////
+LLNode *reverseLinkedList(LLNode *head)
+{
+  // STUDENT ANSWER
+  LLNode *prev = nullptr;
+  LLNode *current = head;
+  LLNode *next = nullptr;
+
+  while (current != nullptr)
+  {
+    next = current->next;
+    current->next = prev;
+    prev = current;
+    current = next;
+  }
+
+  return prev; // 'prev' will be the new head of the reversed list
+}
+
+/////////////////// QUESTION 9 ///////////////////
+/////////////////// QUESTION 9 ///////////////////
+LLNode *rotateLinkedList(LLNode *head, int k)
+{
+  // STUDENT ANSWER
+  if (!head || k <= 0)
+  {
+    return head; // Nothing to rotate
+  }
+
+  // Step 1: Find the length of the linked list
+  int length = 1;
+  LLNode *current = head;
+  while (current->next)
+  {
+    current = current->next;
+    length++;
+  }
+
+  // Step 2: Calculate the effective number of rotations
+  k = k % length;
+
+  // If k is 0 after taking modulo, no rotation is needed
+  if (k == 0)
+  {
+    return head;
+  }
+
+  // Step 3: Traverse the list to find the new head and new tail
+  current = head;
+  for (int i = 1; i < length - k; i++)
+  {
+    current = current->next;
+  }
+
+  // Step 4: Update pointers
+  LLNode *newHead = current->next;
+  current->next = nullptr;
+  current = newHead;
+  while (current->next)
+  {
+    current = current->next;
+  }
+  current->next = head;
+
+  return newHead;
+}

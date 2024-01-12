@@ -1,0 +1,272 @@
+// 11111111111111111111111111111111111111111111111111111
+// 11111111111111111111111111111111111111111111111111111
+
+static T *Partition(T *start, T *end)
+{
+    // TODO: return the pointer which points to the pivot after rearrange the array.
+    T pivot = *start; // Chọn phần tử đầu tiên làm pivot
+    T *i = start + 1; // Con trỏ i bắt đầu từ phần tử thứ hai
+    T *j = end - 1;   // Con trỏ j bắt đầu từ phần tử cuối cùng
+    while (true)
+    {
+        while (*i <= pivot && i != end)
+            ++i; // Tăng i cho đến khi tìm thấy phần tử lớn hơn pivot
+        while (*j > pivot && j != start)
+            --j; // Giảm j cho đến khi tìm thấy phần tử nhỏ hơn hoặc bằng pivot
+        if (i >= j)
+            break;         // Nếu i và j gặp nhau hoặc vượt qua nhau, dừng vòng lặp
+        std::swap(*i, *j); // Hoán đổi giá trị của *i và *j
+    }
+    std::swap(*start, *j); // Hoán đổi giá trị của pivot và *j
+    return j;              // Trả về vị trí của pivot sau khi đã sắp xếp xong mảng
+}
+
+static void QuickSort(T *start, T *end)
+{
+    // TODO
+    // In this question, you must print out the index of pivot in subarray after everytime calling method Partition.
+    if (start < end)
+    {                                     // Nếu mảng có ít nhất hai phần tử
+        T *pivot = Partition(start, end); // Gọi phương thức Partition để chia mảng thành hai nửa
+        cout << pivot - start << " ";     // In ra vị trí của pivot sau khi đã chia mảng
+        QuickSort(start, pivot);          // Gọi đệ quy QuickSort cho nửa mảng bên trái pivot
+        QuickSort(pivot + 1, end);        // Gọi đệ quy QuickSort cho nửa mảng bên phải pivot
+    }
+}
+
+// 222222222222222222222222222222222222222222222222222
+// 222222222222222222222222222222222222222222222222222
+
+static void merge(T *left, T *middle, T *right)
+{
+    int i, j, k;
+    int n1 = middle - left + 1;
+    int n2 = right - middle;
+
+    /* create temp arrays */
+    T L[n1], R[n2];
+
+    /* Copy data to temp arrays L[] and R[] */
+    for (i = 0; i < n1; i++)
+        L[i] = left[i];
+    for (j = 0; j < n2; j++)
+        R[j] = middle[j + 1];
+
+    /* Merge the temp arrays back into arr[l..r]*/
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = 0; // Initial index of merged subarray
+    while (i < n1 && j < n2)
+    {
+        if (L[i] <= R[j])
+        {
+            left[k] = L[i];
+            i++;
+        }
+        else
+        {
+            left[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+    /* Copy the remaining elements of L[], if there are any */
+    while (i < n1)
+    {
+        left[k] = L[i];
+        i++;
+        k++;
+    }
+
+    /* Copy the remaining elements of R[], if there are any */
+    while (j < n2)
+    {
+        left[k] = R[j];
+        j++;
+        k++;
+    }
+
+    Sorting::printArray(left, right);
+}
+static void mergeSort(T *start, T *end)
+{
+    if (start < end)
+    {
+        // Same as (l+r)/2, but avoids overflow for large l and h
+        T *middle = start + (end - start) / 2;
+
+        // Sort first and second halves
+        mergeSort(start, middle);
+        mergeSort(middle + 1, end);
+
+        merge(start, middle, end);
+    }
+}
+
+// 333333333333333333333333333333333333333333333
+// 333333333333333333333333333333333333333333333
+
+// You must use the nodes in the original list and must not modify ListNode's val attribute.
+// Hint: You should complete the function mergeLists first and validate it using our first testcase example
+
+// Merge two sorted lists
+ListNode *mergeLists(ListNode *a, ListNode *b)
+{
+    // Base cases
+    if (!a)
+        return b;
+    if (!b)
+        return a;
+
+    // Start with the linked list whose head data is the least
+    if (a->val < b->val)
+    {
+        a->next = mergeLists(a->next, b);
+        return a;
+    }
+    else
+    {
+        b->next = mergeLists(a, b->next);
+        return b;
+    }
+}
+
+// Sort and unsorted list given its head pointer
+ListNode *mergeSortList(ListNode *head)
+{
+    // Base case: if head is null or there is only one element in the list
+    if (!head || !head->next)
+        return head;
+
+    // Get the middle of the list
+    ListNode *slow = head, *fast = head, *prev = nullptr;
+    while (fast && fast->next)
+    {
+        prev = slow;
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    // Cut the list into two halves
+    prev->next = nullptr;
+
+    // Recursively sort the two halves
+    ListNode *left = mergeSortList(head);
+    ListNode *right = mergeSortList(slow);
+
+    // Merge the two sorted halves
+    return mergeLists(left, right);
+}
+
+// 444444444444444444444444444444444444444444444444444
+// 444444444444444444444444444444444444444444444444444
+
+static void merge(T *start, T *middle, T *end)
+{
+    // TODO
+    int leftSize = middle - start;
+    int rightSize = end - middle;
+    T *left = new T[leftSize];
+    T *right = new T[rightSize];
+
+    for (int i = 0; i < leftSize; i++)
+        left[i] = start[i];
+    for (int i = 0; i < rightSize; i++)
+        right[i] = middle[i];
+
+    int i = 0, j = 0, k = 0;
+    while (i < leftSize && j < rightSize)
+    {
+        if (left[i] <= right[j])
+            start[k++] = left[i++];
+        else
+            start[k++] = right[j++];
+    }
+
+    while (i < leftSize)
+        start[k++] = left[i++];
+    while (j < rightSize)
+        start[k++] = right[j++];
+
+    delete[] left;
+    delete[] right;
+}
+
+static void InsertionSort(T *start, T *end)
+{
+    // TODO
+    for (T *i = start + 1; i != end; ++i)
+    {
+        T key = *i;
+        T *j = i - 1;
+
+        while (j >= start && *j > key)
+        {
+            *(j + 1) = *j;
+            --j;
+        }
+        *(j + 1) = key;
+    }
+}
+
+static void TimSort(T *start, T *end, int min_size)
+{
+    // TODO
+    // You must print out the array after using insertion sort and everytime calling method merge.
+    for (T *i = start; i < end; i += min_size)
+    {
+        InsertionSort(i, min((T *)(i + min_size), end));
+    }
+    cout << "Insertion Sort: ";
+    printArray(start, end);
+
+    int count = 0;
+    for (int size = min_size; size < end - start; size *= 2)
+    {
+        for (T *leftStart = start; leftStart < end; leftStart += 2 * size)
+        {
+            T *midPoint = min((T *)(leftStart + size), end);
+            T *rightEnd = min((T *)(leftStart + 2 * size), end);
+            merge(leftStart, midPoint, rightEnd);
+            cout << "Merge " << ++count << ": ";
+            printArray(start, end);
+        }
+    }
+}
+
+// 5555555555555555555555555555555555555555555555555555
+// 5555555555555555555555555555555555555555555555555555
+
+int maxNumberOfPeople(vector<int> &rooms, vector<int> &people, int k)
+{
+    // Sắp xếp các phòng và người theo thứ tự tăng dần
+    sort(rooms.begin(), rooms.end());
+    sort(people.begin(), people.end());
+
+    int i = 0, j = 0;
+    int count = 0;
+    // Duyệt qua danh sách phòng và người
+    while (i < rooms.size() && j < people.size())
+    {
+        // Nếu kích thước phòng thỏa mãn yêu cầu của người thì tăng biến đếm
+        if (abs(rooms[i] - people[j]) <= k)
+        {
+            count++;
+            i++;
+            j++;
+        }
+        else if (rooms[i] < people[j])
+        {
+            // Nếu kích thước phòng nhỏ hơn yêu cầu thì chuyển sang phòng tiếp theo
+            i++;
+        }
+        else
+        {
+            // Nếu kích thước phòng lớn hơn yêu cầu thì chuyển sang người tiếp theo
+            j++;
+        }
+    }
+    // Trả về số lượng người tối đa có thể ở
+    return count;
+}

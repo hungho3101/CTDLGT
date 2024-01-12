@@ -1,0 +1,213 @@
+//////////// QUESTION 1 /////////////
+int buyCar(int* nums, int length, int k) {
+  sort(nums, nums + length);
+
+  int count = 0;
+  int i = 0;
+  while (i < length && k >= nums[i]) {
+    k -= nums[i];
+    count++;
+    i++;
+  }
+
+  return count;
+}
+//////////// QUESTION 2 /////////////
+bool consecutiveOnes(vector<int> &nums)
+{
+    if (nums.empty())
+    {
+        return true;
+    }
+    int head = 0, tail = 0;
+    for (int i = 0; i <= nums.size(); ++i)
+    {
+        if (nums[i] == 1)
+        {
+            head = i;
+            break;
+        }
+    }
+    for (int i = 0; i <= nums.size(); ++i)
+    {
+        if (nums[i] == 1)
+            tail = i;
+    }
+    bool consecutive = true;
+    for (int i = head; i <= tail && head != 0; ++i)
+    {
+        if (nums[i] != 1)
+            consecutive = false;
+    }
+    return consecutive;
+}
+//////////// QUESTION 3 /////////////
+int equalSumIndex(vector<int> &nums)
+{
+    int left_sum = 0;
+    int right_sum = 0;
+    for (int i = 0; i < nums.size(); i++)
+    {
+        right_sum += nums[i];
+    }
+    for (int i = 0; i < nums.size(); i++)
+    {
+        right_sum -= nums[i];
+        if (left_sum == right_sum)
+        {
+            return i;
+        }
+        left_sum += nums[i];
+    }
+    return -1;
+}
+//////////// QUESTION 4 /////////////
+int longestSublist(vector<string> &words)
+{
+    int n = words.size();
+    int c1 = 0, c2 = 0;
+    for (int i = 0; i < n; i++)
+    {
+        c1 = 0;
+        for (int j = i; j < n; j++)
+        {
+            if (words[i][0] == words[j][0] || words[i][0] == words[j][0] - 32 || words[i][0] == words[j][0] + 32)
+                c1++;
+            else
+                break;
+        }
+        if (i == 0)
+            c2 = c1;
+        else if (c1 > c2)
+            c2 = c1;
+    }
+    return c2;
+}
+//////////// QUESTION 5 /////////////
+template <class T>
+void ArrayList<T>::ensureCapacity(int cap)
+{
+    /*
+        if cap == capacity:
+            new_capacity = capacity * 1.5;
+            create new array with new_capacity
+        else: do nothing
+    */
+    if (cap >= capacity)
+    {
+        int newCapacity = capacity * 1.5;
+        T *newData = new T[newCapacity];
+        for (int i = 0; i < count; i++)
+        {
+            newData[i] = data[i];
+        }
+        delete[] data;
+        data = newData;
+        capacity = newCapacity;
+    }
+}
+
+template <class T>
+void ArrayList<T>::add(T e)
+{
+    /* Insert an element into the end of the array. */
+    ensureCapacity(count + 1);
+    data[count++] = e;
+}
+
+template <class T>
+void ArrayList<T>::add(int index, T e)
+{
+    /*
+        Insert an element into the array at given index.
+        if index is invalid:
+            throw std::out_of_range("the input index is out of range!");
+    */
+    if (index < 0 || index > count)
+    {
+        throw std::out_of_range("the input index is out of range!");
+    }
+
+    ensureCapacity(count + 1);
+    for (int i = count; i > index; i--)
+    {
+        data[i] = data[i - 1];
+    }
+    data[index] = e;
+    count++;
+}
+
+template <class T>
+int ArrayList<T>::size()
+{
+    /* Return the length (size) of the array */
+    return count;
+}
+
+//////////// QUESTION 6 /////////////
+template <class T>
+T ArrayList<T>::removeAt(int index)
+{
+    /*
+    Remove element at index and return removed value
+    if index is invalid:
+        throw std::out_of_range("index is out of range");
+    */
+    if (index < 0 || index >= count)
+    {
+        throw std::out_of_range("the input index is out of range!");
+    }
+
+    T removedItem = data[index];
+    for (int i = index; i < count - 1; i++)
+    {
+        data[i] = data[i + 1];
+    }
+    count--;
+    return removedItem;
+}
+
+template <class T>
+bool ArrayList<T>::removeItem(T item)
+{
+    /* Remove the first apperance of item in array and return true, otherwise return false */
+    for (int i = 0; i < count; i++)
+    {
+        if (data[i] == item)
+        {
+            removeAt(i);
+            return true;
+        }
+    }
+    return false;
+}
+
+template <class T>
+void ArrayList<T>::clear()
+{
+    /*
+        Delete array if array is not NULL
+        Create new array with: size = 0, capacity = 5
+    */
+    if (data != nullptr)
+    {
+        delete[] data;
+    }
+
+    capacity = 5;
+    count = 0;
+    data = new T[5];
+}
+//////////// QUESTION 7 /////////////
+vector<int> updateArrayPerRange(vector<int> &nums, vector<vector<int>> &operations)
+{
+    int sizeop = operations.size();
+    for (int i = 0; i < sizeop; i++)
+    {
+        for (int index = operations[i][0]; index <= operations[i][1]; index++)
+        {
+            nums[index] += operations[i][2];
+        }
+    }
+    return nums;
+}

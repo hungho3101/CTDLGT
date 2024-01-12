@@ -1,0 +1,376 @@
+// 1111111111111111111111111111111111111111111111111
+// 1111111111111111111111111111111111111111111111111
+
+// Function to add a new value to the Binary Search Tree
+void add(T value)
+{
+    // Call the recursive helper function to add the value
+    this->root = addRec(this->root, value);
+}
+
+// Recursive helper function for 'add'
+Node *addRec(Node *node, T value)
+{
+    // If the tree/sub-tree is empty, create a new node
+    if (node == nullptr)
+    {
+        return new Node(value);
+    }
+    // If the value to be added is less than or equal to the current node's value,
+    // call the function for the left sub-tree
+    if (value <= node->value)
+    {
+        node->pLeft = addRec(node->pLeft, value);
+    }
+    else
+    {
+        // Else call the function for the right sub-tree
+        node->pRight = addRec(node->pRight, value);
+    }
+    return node;
+}
+
+// Function to delete a node from the Binary Search Tree
+void deleteNode(T value)
+{
+    // Call the recursive helper function to delete the value
+    this->root = deleteNodeRec(this->root, value);
+}
+
+// Recursive helper function for 'deleteNode'
+Node *deleteNodeRec(Node *node, T value)
+{
+    // Base case: If the tree is empty, return it
+    if (node == nullptr)
+    {
+        return node;
+    }
+    // If the value to be deleted is less than the node's value,
+    // then it lies in left sub-tree
+    if (value < node->value)
+    {
+        node->pLeft = deleteNodeRec(node->pLeft, value);
+    }
+    else if (value > node->value)
+    {
+        // Else if the value to be deleted is greater than the node's value,
+        // then it lies in right sub-tree
+        node->pRight = deleteNodeRec(node->pRight, value);
+    }
+    else
+    {
+        // If key is same as root's key, then this is the node to be deleted
+        if (node->pLeft == nullptr)
+        {
+            Node *temp = node->pRight;
+            delete node;
+            return temp;
+        }
+        else if (node->pRight == nullptr)
+        {
+            Node *temp = node->pLeft;
+            delete node;
+            return temp;
+        }
+        // Node with two children: Get the inorder successor (smallest in the right subtree)
+        Node *temp = minValueNode(node->pRight);
+        // Copy the inorder successor's content to this node
+        node->value = temp->value;
+        // Delete the inorder successor
+        node->pRight = deleteNodeRec(node->pRight, temp->value);
+    }
+    return node;
+}
+
+// Helper function that finds and returns a pointer to the minimum value in a given tree/sub-tree
+Node *minValueNode(Node *node)
+{
+    Node *current = node;
+    while (current && current->pLeft != nullptr)
+    {
+        current = current->pLeft;
+    }
+    return current;
+}
+
+// 2222222222222222222222222222222222222222222222222
+// 2222222222222222222222222222222222222222222222222
+
+// Function to traverse a binary search tree in an alternating level order
+vector<int> levelAlterTraverse(BSTNode *root)
+{
+    // Initialize an empty vector to store the result
+    vector<int> result;
+
+    // If the tree is empty, return the empty result
+    if (root == nullptr)
+    {
+        return result;
+    }
+
+    // Initialize two deques to store the nodes at the current and next levels
+    deque<BSTNode *> currentLevel;
+    deque<BSTNode *> nextLevel;
+
+    // Start with the root node at the current level
+    currentLevel.push_back(root);
+
+    // Initialize a boolean flag to indicate the direction of traversal
+    bool leftToRight = true;
+
+    // While there are nodes at the current level
+    while (!currentLevel.empty())
+    {
+        // Get the first node at the current level
+        BSTNode *currentNode = currentLevel.front();
+        currentLevel.pop_front();
+
+        // If the node is not null, add its value to the result
+        if (currentNode)
+        {
+            result.push_back(currentNode->val);
+
+            // Depending on the direction of traversal, add its children to the next level
+            if (leftToRight)
+            {
+                nextLevel.push_front(currentNode->left);
+                nextLevel.push_front(currentNode->right);
+            }
+            else
+            {
+                nextLevel.push_front(currentNode->right);
+                nextLevel.push_front(currentNode->left);
+            }
+        }
+
+        // If there are no more nodes at the current level
+        if (currentLevel.empty())
+        {
+            // Flip the direction of traversal and swap the current level with the next level
+            leftToRight = !leftToRight;
+            swap(currentLevel, nextLevel);
+        }
+    }
+
+    // Return the result after traversing all nodes
+    return result;
+}
+
+// 3333333333333333333333333333333333333333333333333
+// 3333333333333333333333333333333333333333333333333
+
+#include <stack>
+#include <climits>
+
+// Function to find the k-th smallest element in a binary search tree
+int kthSmallest(BSTNode *root, int k)
+{
+    // Create a stack to keep track of nodes
+    std::stack<BSTNode *> stk;
+    // Start with the root node
+    BSTNode *curr = root;
+    // Initialize a counter to keep track of the number of nodes visited
+    int count = 0;
+
+    // While there are still nodes to visit
+    while (curr != nullptr || !stk.empty())
+    {
+        // Visit the left subtree first
+        while (curr != nullptr)
+        {
+            stk.push(curr);
+            curr = curr->left;
+        }
+        // Visit the current node
+        curr = stk.top();
+        stk.pop();
+        // Increment the counter
+        count++;
+        // If this is the k-th node, return its value
+        if (count == k)
+        {
+            return curr->val;
+        }
+        // Visit the right subtree
+        curr = curr->right;
+    }
+    // If k is greater than the number of nodes, return INT_MIN
+    return INT8_MIN;
+}
+
+// 44444444444444444444444444444444444444444444444
+// 44444444444444444444444444444444444444444444444
+
+// Function to count the number of nodes in a binary search tree whose values are within a given range
+int rangeCount(BTNode *root, int lo, int hi)
+{
+    // If the node is null, return 0 because a null node doesn't have a value
+    if (root == NULL)
+    {
+        return 0;
+    }
+    // If the node's value is less than the lower bound of the range,
+    // skip this node and all nodes in its left subtree because they are also less than the lower bound,
+    // and recursively count nodes in its right subtree
+    if (root->val < lo)
+    {
+        return rangeCount(root->right, lo, hi);
+    }
+    // If the node's value is greater than the upper bound of the range,
+    // skip this node and all nodes in its right subtree because they are also greater than the upper bound,
+    // and recursively count nodes in its left subtree
+    if (root->val > hi)
+    {
+        return rangeCount(root->left, lo, hi);
+    }
+    // If the node's value is within the range,
+    // count this node and recursively count nodes in both its left and right subtrees
+    return 1 + rangeCount(root->left, lo, hi) + rangeCount(root->right, lo, hi);
+}
+
+// 5555555555555555555555555555555555555555
+// 5555555555555555555555555555555555555555
+
+// Function to count the number of single children in a binary search tree
+int singleChild(BSTNode *root)
+{
+    // If the node is null, return 0
+    if (root == nullptr)
+    {
+        return 0;
+    }
+
+    // Initialize count to 0
+    int count = 0;
+
+    // If the node has either a left child or a right child (but not both), increment count
+    if ((root->left != nullptr && root->right == nullptr) ||
+        (root->left == nullptr && root->right != nullptr))
+    {
+        count = 1;
+    }
+
+    // Recursively call the function on the left and right children of the node,
+    // adding their results to count
+    return count + singleChild(root->left) + singleChild(root->right);
+}
+
+// Function to delete a binary search tree
+void deleteTree(BSTNode *root)
+{
+    // If the node is null, return
+    if (root == nullptr)
+    {
+        return;
+    }
+
+    // Recursively call the function on the left and right children of the node
+    deleteTree(root->left);
+    deleteTree(root->right);
+
+    // Delete the node
+    delete root;
+}
+
+// 66666666666666666666666666666666666666666666
+// 66666666666666666666666666666666666666666666
+
+BSTNode *subtreeWithRange(BSTNode *root, int lo, int hi)
+{
+    // Base case: if the node is null, return null
+    if (root == nullptr)
+    {
+        return nullptr;
+    }
+
+    // If the node's value is less than lo, then the left subtree cannot have any nodes in range,
+    // so we discard the left subtree and check in the right subtree
+    if (root->val < lo)
+    {
+        BSTNode *rChild = subtreeWithRange(root->right, lo, hi);
+        delete root;
+        return rChild;
+    }
+
+    // If the node's value is more than hi, then the right subtree cannot have any nodes in range,
+    // so we discard the right subtree and check in the left subtree
+    if (root->val > hi)
+    {
+        BSTNode *lChild = subtreeWithRange(root->left, lo, hi);
+        delete root;
+        return lChild;
+    }
+
+    // If the node's value is in range, we check both subtrees
+    root->left = subtreeWithRange(root->left, lo, hi);
+    root->right = subtreeWithRange(root->right, lo, hi);
+
+    return root;
+}
+
+// 777777777777777777777777777777777777777777
+// 777777777777777777777777777777777777777777
+
+// STUDENT ANSWER BEGIN
+// You can define other functions here to help you.
+bool findRec(Node *node, T i)
+{
+    if (node == NULL)
+        return false;
+    if (node->value == i)
+        return true;
+    if (node->value < i)
+        return findRec(node->pRight, i);
+    return findRec(node->pLeft, i);
+}
+T sumRec(Node *node, T l, T r)
+{
+    if (node == NULL)
+        return 0;
+    if (node->value < l)
+        return sumRec(node->pRight, l, r);
+    if (node->value > r)
+        return sumRec(node->pLeft, l, r);
+    return node->value + sumRec(node->pLeft, l, r) + sumRec(node->pRight, l, r);
+}
+bool find(T i)
+{
+    // TODO: return true if value i is in the tree; otherwise, return false.
+    return findRec(root, i);
+}
+
+T sum(T l, T r)
+{
+    // TODO: return the sum of all element in the tree has value in range [l,r].
+    return sumRec(root, l, r);
+}
+
+// STUDENT ANSWER END
+
+// 88888888888888888888888888888888888888888
+// 88888888888888888888888888888888888888888
+
+// STUDENT ANSWER BEGIN
+// You can define other functions here to help you.
+
+T getMin()
+{
+    Node *node = root;
+    while (node->pLeft != NULL)
+    {
+        node = node->pLeft;
+    }
+    return node->value;
+}
+
+T getMax()
+{
+    Node *node = root;
+    while (node->pRight != NULL)
+    {
+        node = node->pRight;
+    }
+    return node->value;
+}
+
+// STUDENT ANSWER END

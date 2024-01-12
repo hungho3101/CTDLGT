@@ -1,0 +1,265 @@
+//////////////////////////////////////////////////// CAU 1 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void interleaveQueue(queue<int> &q)
+{
+    int size = q.size();
+    queue<int> tempStack;
+    for (int i = 0; i < size / 2; i++)
+    {
+        tempStack.push(q.front());
+        q.pop();
+    }
+    while (!tempStack.empty())
+    {
+        q.push(tempStack.front());
+        tempStack.pop();
+        q.push(q.front());
+        q.pop();
+    }
+}
+
+//////////////////////////////////////////////////// CAU 2 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool isBipartite(vector<vector<int>> graph)
+{
+    int n = graph.size();
+    vector<int> colors(n, -1); // Khởi tạo tất cả các đỉnh với màu -1 (chưa được thăm)
+
+    for (int i = 0; i < n; i++)
+    {
+        if (colors[i] == -1)
+        {
+            queue<int> q;
+            q.push(i);
+            colors[i] = 0; // Bắt đầu với màu 0
+
+            while (!q.empty())
+            {
+                int node = q.front();
+                q.pop();
+
+                for (int neighbor : graph[node])
+                {
+                    if (colors[neighbor] == -1)
+                    {
+                        colors[neighbor] = 1 - colors[node]; // Gán màu ngược
+                        q.push(neighbor);
+                    }
+                    else if (colors[neighbor] == colors[node])
+                    {
+                        return false; // Không phải đồ thị hai phần nếu các đỉnh kề có màu giống nhau
+                    }
+                }
+            }
+        }
+    }
+
+    return true; // Nếu không có xung đột nào được gặp phải, đồ thị được coi là đồ thị hai phần
+}
+
+//////////////////////////////////////////////////// CAU 3 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void bfs(vector<vector<int>> graph, int start)
+{
+    int n = graph.size();
+    vector<bool> visited(n, false); // Dùng để theo dõi các đỉnh đã thăm
+    queue<int> q;                   // Queue để thực hiện duyệt theo BFS
+
+    visited[start] = true;
+    q.push(start);
+
+    while (!q.empty())
+    {
+        int current = q.front();
+        q.pop();
+        cout << current << " "; // In ra đỉnh hiện tại
+
+        for (int neighbor : graph[current])
+        {
+            if (!visited[neighbor])
+            {
+                visited[neighbor] = true;
+                q.push(neighbor);
+            }
+        }
+    }
+}
+
+//////////////////////////////////////////////////// CAU 4 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void push(T item)
+{
+    // TODO: Push new element into the end of the queue
+    list.add(item);
+}
+
+T pop()
+{
+    // TODO: Remove an element in the head of the queue
+    if (empty())
+    {
+        // Handle the case when the queue is empty
+        throw std::out_of_range("Queue is empty");
+    }
+    T frontValue = list.get(0);
+    list.removeAt(0);
+    return frontValue;
+}
+
+T top()
+{
+    // TODO: Get value of the element in the head of the queue
+    if (empty())
+    {
+        // Handle the case when the queue is empty
+        throw std::out_of_range("Queue is empty");
+    }
+    return list.get(0);
+}
+
+bool empty()
+{
+    // TODO: Determine if the queue is empty
+    return list.empty();
+}
+
+int size()
+{
+    // TODO: Get the size of the queue
+    return list.size();
+}
+
+void clear()
+{
+    // TODO: Clear all elements of the queue
+    list.clear();
+}
+
+//////////////////////////////////////////////////// CAU 5 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+long long nthNiceNumber(int n)
+{
+    queue<long long> q;
+    q.push(2);
+    q.push(5);
+    long long niceNumber = 0;
+    int position = 0;
+    while (position < n)
+    {
+        niceNumber = q.front();
+        q.pop();
+        q.push(niceNumber * 10 + 2);
+        q.push(niceNumber * 10 + 5);
+        position++;
+    }
+    return niceNumber;
+}
+
+//////////////////////////////////////////////////// CAU 6 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int secondsToBeRotten(vector<vector<int>> &grid)
+{
+    int rows = grid.size();
+    int cols = grid[0].size();
+    queue<pair<int, int>> rottenApples;
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (grid[i][j] == 2)
+            {
+                rottenApples.push({i, j});
+            }
+        }
+    }
+    int time = 0;
+    const vector<int> dx = {-1, 1, 0, 0};
+    const vector<int> dy = {0, 0, -1, 1};
+    while (!rottenApples.empty())
+    {
+        int size = rottenApples.size();
+        bool rottenThisRound = false;
+        for (int i = 0; i < size; i++)
+        {
+            int x = rottenApples.front().first;
+            int y = rottenApples.front().second;
+            rottenApples.pop();
+            for (int k = 0; k < 4; k++)
+            {
+                int newX = x + dx[k];
+                int newY = y + dy[k];
+                if (newX >= 0 && newX < rows && newY >= 0 && newY < cols && grid[newX][newY] == 1)
+                {
+                    grid[newX][newY] = 2;
+                    rottenApples.push({newX, newY});
+                    rottenThisRound = true;
+                }
+            }
+        }
+        if (rottenThisRound)
+        {
+            time++;
+        }
+    }
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (grid[i][j] == 1)
+            {
+                return -1;
+            }
+        }
+    }
+    return time;
+}
+
+//////////////////////////////////////////////////// CAU 7 ////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int sumOfMaxSubarray(vector<int> &nums, int k)
+{
+    // STUDENT ANSWER
+    int n = nums.size();
+
+    if (n == 0 || k <= 0 || k > n)
+    {
+        // Xử lý các trường hợp đầu vào không hợp lệ
+        return 0;
+    }
+
+    deque<int> maxQueue; // Deque để lưu trữ chỉ số của các phần tử theo thứ tự giảm dần.
+    int maxSum = 0;
+
+    // Tính toán giá trị lớn nhất cho cửa sổ ban đầu có k phần tử.
+    for (int i = 0; i < k; ++i)
+    {
+        while (!maxQueue.empty() && nums[i] >= nums[maxQueue.back()])
+        {
+            maxQueue.pop_back();
+        }
+        maxQueue.push_back(i);
+    }
+
+    for (int i = k; i < n; ++i)
+    {
+        maxSum += nums[maxQueue.front()];
+
+        // Loại bỏ các phần tử nằm ngoài cửa sổ hiện tại.
+        while (!maxQueue.empty() && maxQueue.front() <= i - k)
+        {
+            maxQueue.pop_front();
+        }
+
+        // Loại bỏ các phần tử nhỏ hơn phần tử hiện tại.
+        while (!maxQueue.empty() && nums[i] >= nums[maxQueue.back()])
+        {
+            maxQueue.pop_back();
+        }
+
+        maxQueue.push_back(i);
+    }
+
+    maxSum += nums[maxQueue.front()];
+
+    return maxSum;
+}
